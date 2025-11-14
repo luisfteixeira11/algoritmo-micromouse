@@ -1,3 +1,5 @@
+versão do python q eu to usando: 3.13.3
+    
     Passo 1 - Construir uma matriz 16x16 do labirinto
 
     Passo 2 - Ajustar a matriz de acordo com o começo de onde o micromouse iniciou
