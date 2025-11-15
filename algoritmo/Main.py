@@ -1,4 +1,4 @@
-import API
+import algoritmo.API as API
 import sys
 import numpy as np
 

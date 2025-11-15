@@ -28,3 +28,8 @@ Notem que os lugares de chegada tão como 0 e a distância as seguintes dão a d
     0 0 0 0 - 0 - sem parede pra nenhum dos lados
     1 0 0 0 - 8 - so tem parede em cima
     0 1 1 1  - 7 -  ele so pode andar pra cima pq é o unico lugar possivel, pq tem paredes em todos os lados
+
+
+seria mais ou menos assim, a distância que ele definiu tá uns 256 por isso ta muito numero:
+
+![assim](https://github.com/mackorone/mms/raw/main/img/mms.gif)
