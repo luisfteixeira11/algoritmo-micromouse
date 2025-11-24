@@ -1,14 +1,13 @@
 import algoritmo.API as API
 import sys
+from matriz_inundacao import matriz_inundacao
 import numpy as np
 
 def log(string):
     sys.stderr.write("{}\n".format(string))
     sys.stderr.flush()
 
-def atualizar_inundação():
-    # implementar a lógica de inundação na matriz
-    pass
+matriz_inundacao(matriz) ## vai atualizar a matriz que for dada de parametro
 
 def atualizar_parede():
     # implementar a atualização da parede na célula que o robô está
