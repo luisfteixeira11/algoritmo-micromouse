@@ -1,13 +1,15 @@
 import algoritmo.API as API
 import sys
 from matriz_inundacao import matriz_inundacao
+from matriz_paredes import paredes
 import numpy as np
+
 
 def log(string):
     sys.stderr.write("{}\n".format(string))
     sys.stderr.flush()
 
-matriz_inundacao(matriz) ## vai atualizar a matriz que for dada de parametro
+ ## vai atualizar a matriz que for dada de parametro
 
 def atualizar_parede():
     # implementar a atualização da parede na célula que o robô está
@@ -15,7 +17,9 @@ def atualizar_parede():
 
 def main():
     log("Running...")
-    paredes = np.zeros(16, 16)
+    paredes = np.zeros((16, 16), dtype=int)
+    inundacao = np.zeros((16, 16), dtype=int)
+    x, y = 0, 0
     API.setColor(0, 0, "G")
     API.setText(0, 0, "abc")
     while True:
@@ -24,6 +28,9 @@ def main():
         while API.wallFront():
             API.turnRight()
         API.moveForward()
+        inundacao = matriz_inundacao(inundacao)
+        paredes = atualizar_parede(paredes, x, y)
+        print(paredes)
 
 if __name__ == "__main__":
     main()

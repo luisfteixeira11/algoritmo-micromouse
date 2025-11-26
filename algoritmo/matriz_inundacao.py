@@ -30,7 +30,7 @@ def matriz_inundacao(matriz):
                 continue
             matriz[x,y] = distancia
             movimentos.append((x+1,y))
-            movimentos.append((x,y+1))## se for subscreve e adiciona as coordenadas adjascentes
+            movimentos.append((x,y+1)) ## se for subscreve e adiciona as coordenadas adjascentes
             movimentos.append((x-1,y))
             movimentos.append((x,y-1))
             movimentos.popleft()
