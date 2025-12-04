@@ -3,7 +3,7 @@ import numpy
 
 
 
-def atualizar_paredes(matriz, x, y, orientacao):
+def atualizar_paredes(matriz, y, x, orientacao):
     cima = 8
     baixo = 4
     esquerda = 2
@@ -33,6 +33,6 @@ def atualizar_paredes(matriz, x, y, orientacao):
     if API.wallRight():
         parede+=direita
         
-    matriz[x][y] = parede
+    matriz[y][x] = parede
 
     return matriz
