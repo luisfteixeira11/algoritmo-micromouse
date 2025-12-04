@@ -1,4 +1,4 @@
-import API as API
+import API 
 import sys
 from matriz_inundacao import atualizar_inundacao
 from matriz_paredes import atualizar_paredes
@@ -23,7 +23,7 @@ def main():
     while True:
         # Atualização da matriz de inundação no contexto atual da célula
         matriz_inundacao = atualizar_inundacao(matriz_inundacao)
-        # Atualização da matri
+        # Atualização da matriz
         log("Running...")
         # Criação da matrz de inundação no contexto atual da célula
         matriz_parede = atualizar_paredes(matriz_parede, x, y, orientacao)

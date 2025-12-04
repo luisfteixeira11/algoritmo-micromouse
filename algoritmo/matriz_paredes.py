@@ -14,11 +14,11 @@ def atualizar_paredes(matriz, x, y, orientacao):
     esq = 3
 
     if orientacao == dir: ##parte do código que adapta a alteração do código
-        cima, direita, baixo, esquerda = direita, cima, esquerda, baixo
+        cima, direita, baixo, esquerda = direita, baixo, esquerda, cima
     elif orientacao == bx:
         cima, direita, baixo, esquerda = baixo, esquerda, cima, direita
     elif orientacao == esq:
-        cima, direita, baixo, esquerda = esquerda, baixo, direita, cima
+        cima, direita, baixo, esquerda = esquerda, cima, direita, baixo
 
 
     parede = 0
