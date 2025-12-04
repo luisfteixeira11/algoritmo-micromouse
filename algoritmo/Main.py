@@ -29,8 +29,8 @@ def atualizar_coordenada_orientacao(x, y, movimento,  orientacao):
             x -= 1
     if movimento == "D":
         orientacao = (orientacao + 1) % 4
-        if movimento == "E":
-            orientacao = (orientacao -1) % 4
+    if movimento == "E":
+        orientacao = (orientacao -1) % 4
 
     return x, y, orientacao     
 
