@@ -13,36 +13,28 @@ def log(string):
 ## A fazer: ajuste da posição inicial da matriz
 
 def main():
-    cima = 0
-    ##definição da orientação
-    orientacao = cima
     log("Running...")
     # Criação da matriz de paredes com todos os elementos -1
     matriz_parede = np.zeros((16, 16), dtype=int)-1
     # Criação da matriz de inundaçao com todos elementos em -1
     matriz_inundacao = np.zeros((16, 16), dtype=int)-1
-    #definição do ponto inicial
-    x, y = 0, 0
     API.setColor(0, 0, "G")
     API.setText(0, 0, "START")
     while True:
         # Atualização da matriz de inundação no contexto atual da célula
         matriz_inundacao = atualizar_inundacao(matriz_inundacao)
-        # Atualização da matriz de inundação no contexto atual da célula
+        # Atualização da matri
+        log("Running...")
+        # Criação da matrz de inundação no contexto atual da célula
         matriz_parede = atualizar_paredes(matriz_parede, x, y, orientacao)
-
         # Lógica de virar a matriz
         if not API.wallLeft():
             API.turnLeft()
         while API.wallFront():
             API.turnRight()
-            # Mudança da orientação
-            orientacao=(orientacao+1)%4
-            x+=1 # Opcional 
         log(matriz_parede)
         log(matriz_inundacao)
         API.moveForward()
-        y+=1 #o 'x' e o 'y' eu botei so pra testar, podem mudar a vontade, a orientacao vai precisar pra adicionar a matriz de paredes
         
 
 if __name__ == "__main__":
