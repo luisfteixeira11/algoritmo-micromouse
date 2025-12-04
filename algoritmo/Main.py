@@ -9,6 +9,35 @@ def log(string):
     sys.stderr.write("{}\n".format(string))
     sys.stderr.flush()
 
+N = 0
+L = 1
+S = 2
+O = 3
+x = 0
+y = 0
+orientacao = 0 
+
+def atualizar_coordenada_orientacao(x, y, movimento,  orientacao):
+    if movimento == "F":
+        if orientacao == N:
+            y += 1
+        elif orientacao == S:
+            y -= 1
+        elif orientacao == L:
+            x += 1
+        elif orientacao == O:
+            x -= 1
+    if movimento == "D":
+        orientacao = (orientacao + 1) % 4
+        if movimento == "E":
+            orientacao = (orientacao -1) % 4
+
+    return x, y, orientacao     
+
+
+
+
+
 
 ## A fazer: ajuste da posição inicial da matriz
 
@@ -32,9 +61,11 @@ def main():
             API.turnLeft()
         while API.wallFront():
             API.turnRight()
+            atualizar_coordenada_orientacao(x, y, command, orientacao)
         log(matriz_parede)
         log(matriz_inundacao)
         API.moveForward()
+
         
 
 if __name__ == "__main__":
