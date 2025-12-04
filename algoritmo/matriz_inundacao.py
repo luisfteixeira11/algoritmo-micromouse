@@ -1,7 +1,7 @@
 import numpy
 from collections import deque
 
-def matriz_inundacao(matriz):
+def atualizar_inundacao(matriz):
     inicio1 = (8,8)
     inicio2 = (8,7) ## zeros na matriz
     inicio3 = (7,8)
@@ -30,15 +30,9 @@ def matriz_inundacao(matriz):
                 continue
             matriz[x,y] = distancia
             movimentos.append((x+1,y))
-            movimentos.append((x,y+1))## se for subscreve e adiciona as coordenadas adjascentes
+            movimentos.append((x,y+1)) ## se for subscreve e adiciona as coordenadas adjascentes
             movimentos.append((x-1,y))
             movimentos.append((x,y-1))
             movimentos.popleft()
         distancia+=1
     return matriz
-
-
-if __name__ == '__main__':
-    TAMANHO = 16
-    matriz = matriz_inundacao(numpy.zeros((TAMANHO,TAMANHO), dtype=int)-1)
-    print(matriz)
