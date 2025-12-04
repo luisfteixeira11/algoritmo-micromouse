@@ -3,7 +3,7 @@ import numpy
 
 
 
-def atualizar_paredes(matriz, y, x, orientacao):
+def atualizar_paredes(matriz, x, y, orientacao):
     cima = 8
     baixo = 4
     esquerda = 2
