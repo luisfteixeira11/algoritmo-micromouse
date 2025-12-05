@@ -3,6 +3,7 @@ import sys
 from matriz_inundacao import atualizar_inundacao
 from matriz_paredes import atualizar_paredes
 import numpy as np
+from rota_mapeamento import rota_mapeamento
 
 
 def log(string):
@@ -14,7 +15,7 @@ L = 1
 S = 2
 O = 3
 
-def atualizar_coordenada_orientacao(x, y, movimento,  orientacao):
+def atualizar_coordenada_orientacao(x, y, movimento, orientacao):
     if movimento == "F":
         if orientacao == N:
             y -= 1
@@ -33,14 +34,11 @@ def atualizar_coordenada_orientacao(x, y, movimento,  orientacao):
 
 
 
-
-
-
 ## A fazer: ajuste da posição inicial da matriz
 
 def main():
     x = 0
-    y = 0
+    y = 15
     orientacao = 0 
     log("Running...")
     # Criação da matriz de paredes com todos os elementos -1
@@ -59,12 +57,14 @@ def main():
         # Lógica de virar a matriz. 
         if not API.wallLeft():
             API.turnLeft()
+            x, y, orientacao = atualizar_coordenada_orientacao(x, y, "E", orientacao)
         while API.wallFront():
             API.turnRight()
-            atualizar_coordenada_orientacao(x, y, command, orientacao)
+            x, y, orientacao = atualizar_coordenada_orientacao(x, y, "D", orientacao)
         log(matriz_parede)
         log(matriz_inundacao)
         API.moveForward()
+        
 
         
 
