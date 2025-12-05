@@ -14,19 +14,11 @@ def atualizar_paredes(matriz, x, y, orientacao):
     esq = 3
 
     if orientacao == dir: ##parte do código que adapta a alteração do código
-<<<<<<< HEAD
-        cima, direita, baixo, esquerda = direita, cima, esquerda, baixo
-    elif orientacao == bx:
-        cima, direita, baixo, esquerda = baixo, esquerda, cima, direita
-    elif orientacao == esq:
         cima, direita, baixo, esquerda = esquerda, baixo, direita, cima
-=======
-        cima, direita, baixo, esquerda = direita, baixo, esquerda, cima
     elif orientacao == bx:
         cima, direita, baixo, esquerda = baixo, esquerda, cima, direita
     elif orientacao == esq:
-        cima, direita, baixo, esquerda = esquerda, cima, direita, baixo
->>>>>>> origin/main
+        cima, direita, baixo, esquerda = direita, cima, esquerda, baix
 
 
     parede = 0
@@ -41,10 +33,6 @@ def atualizar_paredes(matriz, x, y, orientacao):
     if API.wallRight():
         parede+=direita
         
-<<<<<<< HEAD
-    matriz[x][y] = parede
-=======
     matriz[y][x] = parede
->>>>>>> origin/main
 
     return matriz
