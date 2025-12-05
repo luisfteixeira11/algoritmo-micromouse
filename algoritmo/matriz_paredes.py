@@ -18,7 +18,7 @@ def atualizar_paredes(matriz, x, y, orientacao):
     elif orientacao == bx:
         cima, direita, baixo, esquerda = baixo, esquerda, cima, direita
     elif orientacao == esq:
-        cima, direita, baixo, esquerda = direita, cima, esquerda, baixo
+        cima, direita, baixo, esquerda = direita, cima, esquerda, baix
 
 
     parede = 0

@@ -64,9 +64,7 @@ def main():
         log(matriz_parede)
         log(matriz_inundacao)
         API.moveForward()
-        x, y, orientacao = atualizar_coordenada_orientacao(x, y, "F", orientacao)
-        log(x)
-        log(y)
+        
 
         
 
