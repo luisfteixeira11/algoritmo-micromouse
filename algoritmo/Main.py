@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import API as API
-=======
 import API 
->>>>>>> origin/main
 import sys
 from matriz_inundacao import atualizar_inundacao
 from matriz_paredes import atualizar_paredes
@@ -13,9 +9,6 @@ def log(string):
     sys.stderr.write("{}\n".format(string))
     sys.stderr.flush()
 
-<<<<<<< HEAD
-
-=======
 N = 0
 L = 1
 S = 2
@@ -43,7 +36,6 @@ def atualizar_coordenada_orientacao(x, y, movimento,  orientacao):
 
 
 
->>>>>>> origin/main
 ## A fazer: ajuste da posição inicial da matriz
 
 def main():
@@ -60,27 +52,16 @@ def main():
     while True:
         # Atualização da matriz de inundação no contexto atual da célula
         matriz_inundacao = atualizar_inundacao(matriz_inundacao)
-<<<<<<< HEAD
-        # Atualização da matri
-        log("Running...")
-        # Criação da matrz de inundação no contexto atual da célula
-        matriz_parede = atualizar_paredes(matriz_parede, x, y, orientacao)
-        # Lógica de virar a matriz
-=======
         # Atualização da matriz
         log("Running...")
         # Criação da matrz de inundação no contexto atual da célula
         matriz_parede = atualizar_paredes(matriz_parede, x, y, orientacao)
         # Lógica de virar a matriz. 
->>>>>>> origin/main
         if not API.wallLeft():
             API.turnLeft()
         while API.wallFront():
             API.turnRight()
-<<<<<<< HEAD
-=======
             atualizar_coordenada_orientacao(x, y, command, orientacao)
->>>>>>> origin/main
         log(matriz_parede)
         log(matriz_inundacao)
         API.moveForward()
