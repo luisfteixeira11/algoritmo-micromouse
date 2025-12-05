@@ -1,6 +1,6 @@
 from collections import deque
 
-def atualizar_inundacao(matriz):
+def atualizar_inundacao(matriz, paredes):
     inicio1 = (8,8)
     inicio2 = (8,7) ## zeros na matriz
     inicio3 = (7,8)
@@ -13,22 +13,22 @@ def atualizar_inundacao(matriz):
     movimentos.append(inicio4)
 
     #numero do inicio da matriz
-    distancia = 0  
+    distancia = 0
 
      
     while movimentos: 
         ##enquanto a fila tiver elementos dentro dela, vai continuar o loop
+        ##pra cada elemento da fila
+        tamanho_movimentos = len(movimentos)
         for i in range(tamanho_movimentos): 
             
-            ##pra cada elemento da fila
-            tamanho_movimentos = len(movimentos)
 
             ##pega as coordenadas da matriz
             x = movimentos[0][0]
             y = movimentos[0][1] 
             
             ##verifica se essa coordenada tá saindo da matriz
-            if (x>=16 or y>=16 or x<0 or y<0): 
+            if x>=16 or y>=16 or x<0 or y<0:
                 movimentos.popleft()
                 continue
 
@@ -37,13 +37,18 @@ def atualizar_inundacao(matriz):
                 ##se não for apaga
                 movimentos.popleft() 
                 continue
+
             
             ## se for subscreve e adiciona as coordenadas adjascentes
             matriz[x,y] = distancia
-            movimentos.append((x+1,y))
-            movimentos.append((x,y+1)) 
-            movimentos.append((x-1,y))
-            movimentos.append((x,y-1))
+            if paredes[x,y]&(1<<0)==0 or paredes[x,y]==-1:
+                movimentos.append((x-1,y))
+            if paredes[x,y]&(1<<1)==0 or paredes[x,y]==-1:
+                movimentos.append((x+1,y))
+            if paredes[x,y]&(1<<2)==0 or paredes[x,y]==-1:
+                movimentos.append((x,y-1))
+            if paredes[x,y]&(1<<3)==0 or paredes[x,y]==-1:
+                movimentos.append((x,y+1))
             movimentos.popleft()
         distancia+=1
     return matriz
