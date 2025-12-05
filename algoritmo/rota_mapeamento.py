@@ -1,4 +1,4 @@
-import API as API
+import API 
 import numpy as np
 
 def rota_mapeamento(x,y,matriz):
@@ -11,7 +11,7 @@ def rota_mapeamento(x,y,matriz):
     while matriz_concluida == False:
         #encurralado
         if API.WallFront() and API.WallLeft() and API.WallRight():
-            return API.turnRight90()
+            API.turnRight90()
             return API.turnRight90()
 
         #bifurcação parede na frente
