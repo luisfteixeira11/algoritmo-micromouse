@@ -3,6 +3,7 @@ import sys
 from matriz_inundacao import atualizar_inundacao
 from matriz_paredes import atualizar_paredes
 import numpy as np
+from rota_mapeamento import rota_mapeamento
 
 
 def log(string):

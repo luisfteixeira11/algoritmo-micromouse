@@ -1,17 +1,17 @@
 import API as API
-import numpy as np
 
 def rota_mapeamento(x,y,matriz):
 
     matriz_concluida = False
 
-    if matriz != -1: #se nenhuma celula da matriz estiver -1 (não visitada)
-        matriz_concluida = True
-
     while matriz_concluida == False:
+        #se nenhuma celula da matriz estiver -1 (não visitada)
+        if matriz != -1: 
+            matriz_concluida = True
+        
         #encurralado
         if API.WallFront() and API.WallLeft() and API.WallRight():
-            return API.turnRight90()
+            API.turnRight90()
             return API.turnRight90()
 
         #bifurcação parede na frente
@@ -45,4 +45,5 @@ def rota_mapeamento(x,y,matriz):
                 else:
                     return API.turnRight90()
                 
+        #adicionar verificação de matriz concluida > matriz concluida == True
         return API.moveForward()
