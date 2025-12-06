@@ -19,6 +19,7 @@ def atualizar_coordenada_orientacao(x, y, movimento, orientacao):
     if movimento == "F":
         if orientacao == N:
             y -= 1
+            
         elif orientacao == S:
             y += 1
         elif orientacao == L:
@@ -29,7 +30,7 @@ def atualizar_coordenada_orientacao(x, y, movimento, orientacao):
         orientacao = (orientacao + 1) % 4
     if movimento == "E":
         orientacao = (orientacao -1) % 4
-
+    API.setColor(x, 15-y, "B")
     return x, y, orientacao     
 
 
@@ -47,13 +48,8 @@ def main():
     matriz_inundacao = np.zeros((16, 16), dtype=int)-1
     API.setColor(0, 0, "G")
     API.setText(0, 0, "START")
+    # Atualização da matriz
     while True:
-        # Atualização da matriz de inundação no contexto atual da célula
-        matriz_inundacao = atualizar_inundacao(matriz_inundacao)
-        # Atualização da matriz
-        log("Running...")
-        # Criação da matrz de inundação no contexto atual da célula
-        matriz_parede = atualizar_paredes(matriz_parede, x, y, orientacao)
         # Lógica de virar a matriz. 
         if not API.wallLeft():
             API.turnLeft()
@@ -61,8 +57,13 @@ def main():
         while API.wallFront():
             API.turnRight()
             x, y, orientacao = atualizar_coordenada_orientacao(x, y, "D", orientacao)
+        # Criação da matriz de paredes no contexto atual da célula
+        matriz_parede = atualizar_paredes(matriz_parede, x, y, orientacao)
         log(matriz_parede)
+        # Atualização da matriz de inundação no contexto atual da célula
+        matriz_inundacao = atualizar_inundacao(matriz_inundacao, matriz_parede)
         log(matriz_inundacao)
+        x, y, orientacao = atualizar_coordenada_orientacao(x, y, "F", orientacao)
         API.moveForward()
         
 
