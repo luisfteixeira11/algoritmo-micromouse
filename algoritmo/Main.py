@@ -35,11 +35,17 @@ def main():
     while True:
         # Criação da matriz de paredes no contexto atual da célula
         # Atualização da matriz de inundação no contexto atual da célula
-        rota_mapeamento(x, y, matriz_parede, orientacao)
+        matriz_concluida = False
+        while matriz_concluida == False:
+            x, y, orientacao = rota_mapeamento(x, y, matriz_parede, orientacao)
+            log(matriz_parede)
+            API.setColor(x, 15-y, "B")
+            if (matriz_parede).any() != -1:
+                matriz_concluida = True
+
         matriz_parede = atualizar_paredes(matriz_parede, x, y, orientacao)
-        log(matriz_parede)
+        
         matriz_inundacao = atualizar_inundacao(matriz_inundacao, matriz_parede)
-        log(matriz_inundacao)
         
 
         

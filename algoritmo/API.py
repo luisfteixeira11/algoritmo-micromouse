@@ -1,7 +1,6 @@
 import sys
 
 
-
 def atualizar_coordenada_orientacao(x, y, movimento, orientacao):
     N = 0
     L = 1
@@ -20,7 +19,7 @@ def atualizar_coordenada_orientacao(x, y, movimento, orientacao):
         orientacao = (orientacao + 1) % 4
     if movimento == "E":
         orientacao = (orientacao -1) % 4
-    setColor(x, 15-y, "B")
+    
     return x, y, orientacao     
 
 
