@@ -6,6 +6,7 @@ def rota_mapeamento(x,y,matriz):
 
     while matriz_concluida == False:
         #se nenhuma celula da matriz estiver -1 (não visitada)
+        #se não der colocar: "(matriz==-1).any()" - o nome disso é mascara boleana, pesquisar depois
         if matriz != -1: 
             matriz_concluida = True
         
