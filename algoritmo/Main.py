@@ -10,30 +10,6 @@ def log(string):
     sys.stderr.write("{}\n".format(string))
     sys.stderr.flush()
 
-N = 0
-L = 1
-S = 2
-O = 3
-
-def atualizar_coordenada_orientacao(x, y, movimento, orientacao):
-    if movimento == "F":
-        if orientacao == N:
-            y -= 1
-            
-        elif orientacao == S:
-            y += 1
-        elif orientacao == L:
-            x += 1
-        elif orientacao == O:
-            x -= 1
-    if movimento == "D":
-        orientacao = (orientacao + 1) % 4
-    if movimento == "E":
-        orientacao = (orientacao -1) % 4
-    API.setColor(x, 15-y, "B")
-    return x, y, orientacao     
-
-
 
 ## A fazer: ajuste da posição inicial da matriz
 
@@ -41,30 +17,29 @@ def main():
     x = 0
     y = 15
     orientacao = 0 
-    log("Running...")
     # Criação da matriz de paredes com todos os elementos -1
     matriz_parede = np.zeros((16, 16), dtype=int)-1
     # Criação da matriz de inundaçao com todos elementos em -1
     matriz_inundacao = np.zeros((16, 16), dtype=int)-1
-    API.setColor(0, 0, "G")
+    API.setColor(0, 0, "R")
     API.setText(0, 0, "START")
+    API.setColor(7, 7, "G")
+    API.setText(7, 7, "END")
+    API.setColor(8, 7, "G")
+    API.setText(8, 7, "END")
+    API.setColor(7, 8, "G")
+    API.setText(7, 8, "END")
+    API.setColor(8, 8, "G")
+    API.setText(8, 8, "END")
     # Atualização da matriz
     while True:
-        # Lógica de virar a matriz. 
-        if not API.wallLeft():
-            API.turnLeft()
-            x, y, orientacao = atualizar_coordenada_orientacao(x, y, "E", orientacao)
-        while API.wallFront():
-            API.turnRight()
-            x, y, orientacao = atualizar_coordenada_orientacao(x, y, "D", orientacao)
         # Criação da matriz de paredes no contexto atual da célula
+        # Atualização da matriz de inundação no contexto atual da célula
+        rota_mapeamento(x, y, matriz_parede, orientacao)
         matriz_parede = atualizar_paredes(matriz_parede, x, y, orientacao)
         log(matriz_parede)
-        # Atualização da matriz de inundação no contexto atual da célula
         matriz_inundacao = atualizar_inundacao(matriz_inundacao, matriz_parede)
         log(matriz_inundacao)
-        x, y, orientacao = atualizar_coordenada_orientacao(x, y, "F", orientacao)
-        API.moveForward()
         
 
         
