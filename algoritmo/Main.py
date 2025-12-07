@@ -1,11 +1,14 @@
 import API 
-import sys
 from matriz_inundacao import atualizar_inundacao
 from matriz_paredes import atualizar_paredes
 import numpy as np
 from rota_mapeamento import rota_mapeamento
+<<<<<<< HEAD
 from fastrun import melhor_caminho_para_centro
 
+=======
+from flood_volta import flood_volta
+>>>>>>> b70a93ff57ed6778ebcb2724d05cf008deb6ac9f
 
 
 def main():
@@ -15,7 +18,6 @@ def main():
     # Criação da matriz de paredes com todos os elementos -1
     matriz_parede = np.zeros((16, 16), dtype=int)-1
     # Criação da matriz de inundaçao com todos elementos em -1
-    matriz_inundacao = np.zeros((16, 16), dtype=int)-1
     API.setColor(0, 0, "R")
     API.setText(0, 0, "START")
     API.setColor(7, 7, "G")
@@ -44,6 +46,15 @@ def main():
             API.log(x)
             API.log(y)
             API.log(orientacao)
+<<<<<<< HEAD
+=======
+
+                
+        matriz_inundacao = np.zeros((16, 16), dtype=int)-1
+        matriz_inundacao = flood_volta(matriz_inundacao, matriz_parede)
+        API.log(matriz_inundacao)
+        
+>>>>>>> b70a93ff57ed6778ebcb2724d05cf008deb6ac9f
         
         melhor_caminho_para_centro(x, y, orientacao, matriz_inundacao, matriz_parede)
 

@@ -1,6 +1,12 @@
 from collections import deque
+import API
 
 # Ainda não finalizado, importante aprimorar a verificação dos bits
+
+def posicao_acessivel(x1, y1):
+    if x1>15 or y1>15 or y1<0 or x1<0:
+        return False
+    return True
 
 def atualizar_inundacao(matriz, paredes):
     inicio1 = (8,8)
@@ -26,18 +32,11 @@ def atualizar_inundacao(matriz, paredes):
             
 
             ##pega as coordenadas da matriz
-            y = movimentos[0][0]
-            x = movimentos[0][1] 
+            y, x = movimentos.popleft()
             
-            ##verifica se essa coordenada tá saindo da matriz
-            if y>=16 or x>=16 or y<0 or x<0:
-                x, y = movimentos.popleft()
-                continue
 
             ##verifica se é o melhor caminho possível
             if matriz[y,x]<=distancia and matriz[y,x] != -1:
-                ##se não for apaga
-                x, y = movimentos.popleft() 
                 continue
 
             
@@ -46,20 +45,26 @@ def atualizar_inundacao(matriz, paredes):
 
             # se no primeiro bit 2⁰==1 (indice 0 do binário ex.0010(que é esse ultimo zero)) não tiver parede na direita
             #a coordenada sucessora pode entrar na fila
-            if (paredes[y,x]&(1<<0))==0 or paredes[y,x]==-1:
-                movimentos.append((y,x+1))
+            if ((paredes[y,x]&(1<<0))==0 or paredes[y,x]==-1) and posicao_acessivel(x+1,y):
+                if (paredes[y,x+1]&(1<<1))==0 or paredes[y,x+1]==-1:
+                    movimentos.append((y,x+1))
 
             # se o segundo bit 2¹==2 (indice 1 do binário) não tiver parede na esquerda pode entrar na fila
-            if (paredes[y,x]&(1<<1))==0 or paredes[y,x]==-1:
-                movimentos.append((y,x-1))
+            if ((paredes[y,x]&(1<<1))==0 or paredes[y,x]==-1) and posicao_acessivel(x-1,y):
+                if (paredes[y,x-1]&(1<<0))==0 or paredes[y,x-1]==-1:
+                    movimentos.append((y,x-1))
 
             # se o terceiro bit 2²==4 (indice 2 do binário) não tiver parede embaixo pode entrar na fila
-            if (paredes[y,x]&(1<<2))==0 or paredes[y,x]==-1:
-                movimentos.append((y-1,x))
+            if ((paredes[y,x]&(1<<2))==0 or paredes[y,x]==-1) and posicao_acessivel(x,y-1):
+                if (paredes[y-1,x]&(1<<3))==0 or paredes[y-1,x]==-1:
+                    API.log(paredes[y-1,x]&(1<<3)==0)
+                    movimentos.append((y-1,x))
 
             # se o quarto bit 2³==8 (indice 3 do binário) não tiver parede encima pode entrar na fila
-            if (paredes[y,x]&(1<<3))==0 or paredes[y,x]==-1:
-                movimentos.append((y+1,x))
-            movimentos.popleft()
+            if ((paredes[y,x]&(1<<3))==0 or paredes[y,x]==-1) and posicao_acessivel(x,y+1):
+                if (paredes[y+1,x]&(1<<2))==0 or paredes[y+1,x]==-1:
+                    movimentos.append((y+1,x))
+        
         distancia+=1
+
     return matriz
