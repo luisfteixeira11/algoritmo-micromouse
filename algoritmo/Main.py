@@ -44,6 +44,7 @@ def main():
             API.log(x)
             API.log(y)
             API.log(orientacao)
+            API.log(matriz_inundacao)
         
         melhor_caminho_para_centro(x, y, orientacao, matriz_inundacao, matriz_parede)
 
