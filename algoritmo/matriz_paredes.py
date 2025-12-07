@@ -1,7 +1,6 @@
 import API
-import numpy
 
-
+# Matriz de paredes foi finalizada
 
 def atualizar_paredes(matriz, x, y, orientacao):
     cima = 8
@@ -12,18 +11,18 @@ def atualizar_paredes(matriz, x, y, orientacao):
     dir = 1
     bx = 2
     esq = 3
-
-    if orientacao == dir: ##parte do código que adapta a alteração do código
-        cima, direita, baixo, esquerda = esquerda, baixo, direita, cima
+    
+    # Altera a orientação do robô para ele considerar sempre a parte visual do labirinto
+    if orientacao == dir:
+        cima, direita, baixo, esquerda = direita, baixo, esquerda, cima
     elif orientacao == bx:
         cima, direita, baixo, esquerda = baixo, esquerda, cima, direita
     elif orientacao == esq:
-        cima, direita, baixo, esquerda = direita, cima, esquerda, baix
-
+        cima, direita, baixo, esquerda = esquerda, cima, direita, baixo
 
     parede = 0
 
-    
+    # Faz a soma dos valores da parede
     if API.wallFront():
         parede+=cima
     if API.wallBack():
@@ -33,6 +32,6 @@ def atualizar_paredes(matriz, x, y, orientacao):
     if API.wallRight():
         parede+=direita
         
-    matriz[y][x] = parede
+    matriz[y, x] = parede
 
     return matriz
