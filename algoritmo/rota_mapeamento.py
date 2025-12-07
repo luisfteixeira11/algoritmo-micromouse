@@ -8,6 +8,7 @@ def rota_mapeamento(x,y,matriz, orientacao):
     esquerda = (y, x-1)
     direita = (y, x+1)
 
+    N = 0
     L = 1
     S = 2
     O = 3
@@ -26,6 +27,8 @@ def rota_mapeamento(x,y,matriz, orientacao):
     # Altera a orientação do robô para ele considerar sempre a parte visual do labirinto
     if orientacao == L:
         cima, direita, baixo, esquerda = direita, baixo, esquerda, cima
+    elif orientacao == N:
+        cima, direita, baixo, esquerda = cima, direita, baixo, esquerda
     elif orientacao == S:
         cima, direita, baixo, esquerda = baixo, esquerda, cima, direita
     elif orientacao == O:
