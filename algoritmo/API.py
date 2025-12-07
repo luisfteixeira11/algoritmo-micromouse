@@ -1,5 +1,32 @@
 import sys
 
+
+def log(string):
+    sys.stderr.write("{}\n".format(string))
+    sys.stderr.flush()
+
+def atualizar_coordenada_orientacao(x, y, movimento, orientacao):
+    N = 0
+    L = 1
+    S = 2
+    O = 3
+    if movimento == "F":
+        if orientacao == N:
+            y -= 1
+            
+        elif orientacao == S:
+            y += 1
+        elif orientacao == L:
+            x += 1
+        elif orientacao == O:
+            x -= 1
+    if movimento == "D":
+        orientacao = (orientacao + 1) % 4
+    if movimento == "E":
+        orientacao = (orientacao -1) % 4
+    setColor(x, 15-y, "B")
+    return x, y, orientacao  
+
 class MouseCrashedError(Exception):
     pass
 
