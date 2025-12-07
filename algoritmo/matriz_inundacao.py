@@ -44,22 +44,23 @@ def atualizar_inundacao(matriz, paredes):
             ## se for subscreve e adiciona as coordenadas adjascentes
             matriz[y,x] = distancia
 
-            # se no primeiro bit 2⁰==1 (indice 0 do binário ex.0010(que é esse ultimo zero)) não tiver parede na direita
-            #a coordenada sucessora pode entrar na fila
-            if (paredes[y,x]&(1<<0))==0 or paredes[y,x]==-1:
-                movimentos.append((y,x+1))
+            # A partir da coordenada atual (y, x), verifica se o movimento é permitido
 
-            # se o segundo bit 2¹==2 (indice 1 do binário) não tiver parede na esquerda pode entrar na fila
-            if (paredes[y,x]&(1<<1))==0 or paredes[y,x]==-1:
-                movimentos.append((y,x-1))
+            # Verifica se a parede da DIREITA (Bit 2^0 = 1) não está setada
+            if not (paredes[y, x] & 1) or paredes[y, x] == -1:
+                 movimentos.append((y, x + 1))
 
-            # se o terceiro bit 2²==4 (indice 2 do binário) não tiver parede embaixo pode entrar na fila
-            if (paredes[y,x]&(1<<2))==0 or paredes[y,x]==-1:
-                movimentos.append((y-1,x))
+           # Verifica se a parede da ESQUERDA (Bit 2^1 = 2) não está setada
+            if not (paredes[y, x] & 2) or paredes[y, x] == -1:
+                movimentos.append((y, x - 1))
 
-            # se o quarto bit 2³==8 (indice 3 do binário) não tiver parede encima pode entrar na fila
-            if (paredes[y,x]&(1<<3))==0 or paredes[y,x]==-1:
-                movimentos.append((y+1,x))
-            movimentos.popleft()
-        distancia+=1
+           # Verifica se a parede de BAIXO (Bit 2^2 = 4) não está setada
+            if not (paredes[y, x] & 4) or paredes[y, x] == -1:
+                movimentos.append((y + 1, x))
+
+            # Verifica se a parede de CIMA (Bit 2^3 = 8) não está setada
+            if not (paredes[y, x] & 8) or paredes[y, x] == -1:
+                movimentos.append((y - 1, x))
+        
+        distancia += 1
     return matriz
