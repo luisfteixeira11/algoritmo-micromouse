@@ -35,8 +35,8 @@ def main():
         while matriz_concluida == False:
             x, y, orientacao = rota_mapeamento(x, y, matriz_parede, orientacao)
             matriz_parede = atualizar_paredes(matriz_parede, x, y, orientacao)
-            API.log(matriz_inundacao)
-            API.log(matriz_parede)
+            #API.log(matriz_inundacao)
+            #API.log(matriz_parede)
             API.setColor(x, 15-y, "B")
             if not -1 in matriz_parede:
                 matriz_concluida = True
