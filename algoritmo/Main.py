@@ -4,6 +4,8 @@ from matriz_paredes import atualizar_paredes
 import numpy as np
 from rota_mapeamento import rota_mapeamento
 from flood_volta import flood_volta
+from fastrun import melhor_caminho_para_centro
+
 
 
 def main():
@@ -29,23 +31,18 @@ def main():
         # Atualização da matriz de inundação no contexto atual da célula
         matriz_concluida = False
         while matriz_concluida == False:
-            x, y, orientacao = rota_mapeamento(x, y, matriz_parede, orientacao)
+            matriz_inundacao = np.zeros((16, 16), dtype=int)-1
             matriz_parede = atualizar_paredes(matriz_parede, x, y, orientacao)
-            API.log(matriz_parede)
-            API.setColor(x, 15-y, "B")
-            if (matriz_parede).any() != -1:
+            matriz_inundacao = atualizar_inundacao(matriz_inundacao, matriz_parede)
+            if not -1 in matriz_parede:
                 matriz_concluida = True
-            API.log(x)
-            API.log(y)
-            API.log(orientacao)
-
-                
-        matriz_inundacao = np.zeros((16, 16), dtype=int)-1
-        matriz_inundacao = atualizar_inundacao(matriz_inundacao, matriz_parede)
-        API.log(matriz_inundacao)
-        
-        matriz_inundacao = flood_volta(matriz_inundacao, matriz_parede)
-        
+            x, y, orientacao = rota_mapeamento(x, y, matriz_parede, orientacao)
+            API.setColor(x, 15-y, "B")
+            API.log(matriz_parede)
+            matriz_inundacao = flood_volta(matriz_inundacao, matriz_parede)
+        if (matriz_concluida==True):
+            API.log("venceu")
+        melhor_caminho_para_centro(x, y, orientacao, matriz_inundacao, matriz_parede)
 
         
 
