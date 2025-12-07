@@ -12,38 +12,38 @@ def rota_mapeamento(x,y,matriz):
         #encurralado
         if API.WallFront() and API.WallLeft() and API.WallRight():
             API.turnRight90()
-            return API.turnRight90()
+            API.turnRight90()
 
         #bifurcação parede na frente
-        if API.WallFront() and API.WallLeft()==False and API.WallRight()==False:
+        elif API.WallFront() and API.WallLeft()==False and API.WallRight()==False:
             if matriz[x-1][y] == -1:
-                return API.turnLeft90()
+                API.turnLeft90()
             else:
-                return API.turnRight90()
+                API.turnRight90()
 
         #bifurcação parede esquerda
-        if API.WallFront()==False  and API.WallLeft() and API.WallRight()==False:
+        elif API.WallFront()==False  and API.WallLeft() and API.WallRight()==False:
             if matriz[x][y-1] == -1:
                 continue
             else:
-                return API.turnRight90()
+                API.turnRight90()
 
         #bifurcação parede direita
-        if API.WallFront()==False  and API.WallLeft()==False and API.WallRight():
+        elif API.WallFront()==False  and API.WallLeft()==False and API.WallRight():
             if matriz[x][y-1] == -1:
                 continue
             else:
-                return API.turnLeft90()
+                API.turnLeft90()
 
         #trifurcação
-        if API.WallFront()==False and API.WallLeft()==False and API.WallRight()==False:
+        elif API.WallFront()==False and API.WallLeft()==False and API.WallRight()==False:
             if matriz [x][y-1] == -1:
                 continue
             else:
                 if matriz[x-1][y] == -1:
-                    return API.turnLeft90()
+                    API.turnLeft90()
                 else:
-                    return API.turnRight90()
+                    API.turnRight90()
                 
         #adicionar verificação de matriz concluida > matriz concluida == True
         return API.moveForward()
