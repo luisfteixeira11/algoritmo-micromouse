@@ -23,6 +23,11 @@ def atualizar_coordenada_orientacao(x, y, movimento, orientacao):
     return x, y, orientacao     
 
 
+def log(string):
+    sys.stderr.write("{}\n".format(string))
+    sys.stderr.flush()
+
+
 class MouseCrashedError(Exception):
     pass
 

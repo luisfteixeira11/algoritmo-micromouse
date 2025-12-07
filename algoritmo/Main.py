@@ -6,12 +6,6 @@ import numpy as np
 from rota_mapeamento import rota_mapeamento
 
 
-def log(string):
-    sys.stderr.write("{}\n".format(string))
-    sys.stderr.flush()
-
-
-## A fazer: ajuste da posição inicial da matriz
 
 def main():
     x = 0
@@ -38,13 +32,16 @@ def main():
         matriz_concluida = False
         while matriz_concluida == False:
             x, y, orientacao = rota_mapeamento(x, y, matriz_parede, orientacao)
-            log(matriz_parede)
+            matriz_parede = atualizar_paredes(matriz_parede, x, y, orientacao)
+            API.log(matriz_parede)
             API.setColor(x, 15-y, "B")
             if (matriz_parede).any() != -1:
                 matriz_concluida = True
+            API.log(x)
+            API.log(y)
+            API.log(orientacao)
 
-        matriz_parede = atualizar_paredes(matriz_parede, x, y, orientacao)
-        
+                
         matriz_inundacao = atualizar_inundacao(matriz_inundacao, matriz_parede)
         
 
