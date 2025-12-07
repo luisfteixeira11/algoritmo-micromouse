@@ -19,10 +19,6 @@ def atualizar_paredes(matriz, x, y, orientacao):
         cima, direita, baixo, esquerda = baixo, esquerda, cima, direita
     elif orientacao == esq:
         cima, direita, baixo, esquerda = esquerda, cima, direita, baixo
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/main
 
     parede = 0
 
