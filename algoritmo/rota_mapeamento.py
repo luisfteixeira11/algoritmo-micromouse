@@ -1,50 +1,100 @@
-import API as API
+import API
 
-def rota_mapeamento(x,y,matriz):
+def rota_mapeamento(x,y,matriz, orientacao):
 
-    matriz_concluida = False
+    cima = y-1
+    baixo = y+1
+    esquerda = x-1
+    direita = x+1
 
-    while matriz_concluida == False:
-        #se nenhuma celula da matriz estiver -1 (não visitada)
-        #se não der colocar: "(matriz==-1).any()" - o nome disso é mascara boleana, pesquisar depois
-        if matriz != -1: 
-            matriz_concluida = True
-        
-        #encurralado
-        if API.WallFront() and API.WallLeft() and API.WallRight():
+    L = 1
+    S = 2
+    O = 3
+
+    orientacao = 0
+
+    # Altera a orientação do robô para ele considerar sempre a parte visual do labirinto
+    if orientacao == L:
+        cima, direita, baixo, esquerda = direita, baixo, esquerda, cima
+    elif orientacao == S:
+        cima, direita, baixo, esquerda = baixo, esquerda, cima, direita
+    elif orientacao == O:
+        cima, direita, baixo, esquerda = esquerda, cima, direita, baixo
+
+    #encurralado
+    if API.wallFront() and API.wallLeft() and API.wallRight():
+        API.turnRight90()
+        x, y, orientacao = (API.atualizar_coordenada_orientacao(x, y, "D", orientacao))
+        orientacao = (orientacao + L) % 4
+        API.turnRight90()
+        x, y, orientacao = (API.atualizar_coordenada_orientacao(x, y, "D", orientacao))
+        orientacao = (orientacao + L) % 4
+
+    #bifurcação parede na frente
+    elif API.wallFront() and API.wallLeft()==False and API.wallRight()==False:
+        #esquerda visitada?
+        if matriz[esquerda][y] == -1:
+            API.turnLeft90()
+            x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "E", orientacao)
+            orientacao = (orientacao - O) % 4
+        else:
             API.turnRight90()
-            API.turnRight90()
+            x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)
+            orientacao = (orientacao + L) % 4
 
-        #bifurcação parede na frente
-        elif API.WallFront() and API.WallLeft()==False and API.WallRight()==False:
-            if matriz[x-1][y] == -1:
+    #bifurcação parede esquerda
+    elif API.wallFront()==False and API.wallLeft() and API.wallRight()==False:
+        #frente visitada?
+        if matriz[x][cima] == -1:
+            pass
+        else:
+            API.turnRight90()
+            x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)
+            orientacao = (orientacao + L) % 4
+
+    #bifurcação parede direita
+    elif API.wallFront()==False  and API.wallLeft()==False and API.wallRight():
+        #frente visitada?
+        if matriz[x][cima] == -1:
+            pass
+        else:
+            API.turnLeft90()
+            x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "E", orientacao)
+            orientacao = (orientacao - O) % 4
+
+    #trifurcação
+    elif API.wallFront()==False and API.wallLeft()==False and API.wallRight()==False:
+        #frente visitada?
+        if matriz [x][cima] == -1:
+            pass
+        else:
+            #esquerda visitada?
+            if matriz[esquerda][y] == -1:
                 API.turnLeft90()
+                x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "E", orientacao)
+                orientacao = (orientacao - O) % 4
             else:
                 API.turnRight90()
+                x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)
+                orientacao = (orientacao + L) % 4
 
-        #bifurcação parede esquerda
-        elif API.WallFront()==False  and API.WallLeft() and API.WallRight()==False:
-            if matriz[x][y-1] == -1:
-                continue
-            else:
-                API.turnRight90()
+    #só tem como virar para a direita
+    elif API.wallFront() and API.wallLeft():
+        API.turnRight90()
+        x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)
+        orientacao = (orientacao + L) % 4
 
-        #bifurcação parede direita
-        elif API.WallFront()==False  and API.WallLeft()==False and API.WallRight():
-            if matriz[x][y-1] == -1:
-                continue
-            else:
-                API.turnLeft90()
+    #só tem como virar para a esquerda
+    elif API.wallFront() and API.wallRight():
+        API.turnLeft90()
+        x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "E", orientacao)
+        orientacao = (orientacao - O) % 4
 
-        #trifurcação
-        elif API.WallFront()==False and API.WallLeft()==False and API.WallRight()==False:
-            if matriz [x][y-1] == -1:
-                continue
-            else:
-                if matriz[x-1][y] == -1:
-                    API.turnLeft90()
-                else:
-                    API.turnRight90()
-                
-        #adicionar verificação de matriz concluida > matriz concluida == True
-        return API.moveForward()
+    #só tem seguir em frente
+    elif API.wallRight() and API.wallLeft():
+        pass
+
+    API.moveForward()
+    x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "F", orientacao)
+    API.log(f"orientacao:{orientacao}")
+    return x, y, orientacao
