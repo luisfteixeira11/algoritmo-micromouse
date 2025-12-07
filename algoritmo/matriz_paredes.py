@@ -11,19 +11,18 @@ def atualizar_paredes(matriz, x, y, orientacao):
     dir = 1
     bx = 2
     esq = 3
-
+    
     # Altera a orientação do robô para ele considerar sempre a parte visual do labirinto
     if orientacao == dir:
         cima, direita, baixo, esquerda = direita, baixo, esquerda, cima
     elif orientacao == bx:
         cima, direita, baixo, esquerda = baixo, esquerda, cima, direita
     elif orientacao == esq:
-<<<<<<< HEAD
-        cima, direita, baixo, esquerda = direita, cima, esquerda, baixo
-=======
         cima, direita, baixo, esquerda = esquerda, cima, direita, baixo
->>>>>>> main
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 
     parede = 0
 
