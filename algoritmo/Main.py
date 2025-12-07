@@ -4,6 +4,7 @@ from matriz_inundacao import atualizar_inundacao
 from matriz_paredes import atualizar_paredes
 import numpy as np
 from rota_mapeamento import rota_mapeamento
+from fastrun import melhor_caminho_para_centro
 
 
 
@@ -30,20 +31,21 @@ def main():
         # Criação da matriz de paredes no contexto atual da célula
         # Atualização da matriz de inundação no contexto atual da célula
         matriz_concluida = False
+        matriz_inundacao = atualizar_inundacao(matriz_inundacao, matriz_parede)
         while matriz_concluida == False:
             x, y, orientacao = rota_mapeamento(x, y, matriz_parede, orientacao)
             matriz_parede = atualizar_paredes(matriz_parede, x, y, orientacao)
+            API.log(matriz_inundacao)
             API.log(matriz_parede)
             API.setColor(x, 15-y, "B")
-            if (matriz_parede).any() != -1:
+            if not -1 in matriz_parede:
                 matriz_concluida = True
+                API.log(matriz_concluida)
             API.log(x)
             API.log(y)
             API.log(orientacao)
-
-                
-        matriz_inundacao = atualizar_inundacao(matriz_inundacao, matriz_parede)
         
+        melhor_caminho_para_centro(x, y, orientacao, matriz_inundacao, matriz_parede)
 
         
 
