@@ -41,10 +41,10 @@ def main():
             if not -1 in matriz_parede:
                 matriz_concluida = True
                 API.log(matriz_concluida)
-            API.log(x)
-            API.log(y)
-            API.log(orientacao)
-        
+            #API.log(x)
+            #API.log(y)
+            #API.log(orientacao)
+            API.log(matriz_parede)
         melhor_caminho_para_centro(x, y, orientacao, matriz_inundacao, matriz_parede)
 
         
