@@ -39,43 +39,6 @@ def rota_mapeamento(x,y,matriz, orientacao):
             orientacao = (orientacao - O) % 4
         else:
             API.turnRight90()
-<<<<<<< HEAD
-            API.turnRight90()
-
-        #bifurcação parede na frente
-        elif API.WallFront() and API.WallLeft()==False and API.WallRight()==False:
-            if matriz[x-1][y] == -1:
-                API.turnLeft90()
-            else:
-                API.turnRight90()
-
-        #bifurcação parede esquerda
-        elif API.WallFront()==False  and API.WallLeft() and API.WallRight()==False:
-            if matriz[x][y-1] == -1:
-                continue
-            else:
-                API.turnRight90()
-
-        #bifurcação parede direita
-        elif API.WallFront()==False  and API.WallLeft()==False and API.WallRight():
-            if matriz[x][y-1] == -1:
-                continue
-            else:
-                API.turnLeft90()
-
-        #trifurcação
-        elif API.WallFront()==False and API.WallLeft()==False and API.WallRight()==False:
-            if matriz [x][y-1] == -1:
-                continue
-            else:
-                if matriz[x-1][y] == -1:
-                    API.turnLeft90()
-                else:
-                    API.turnRight90()
-                
-        #adicionar verificação de matriz concluida > matriz concluida == True
-        return API.moveForward()
-=======
             x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)
             orientacao = (orientacao + L) % 4
 
@@ -135,4 +98,3 @@ def rota_mapeamento(x,y,matriz, orientacao):
     x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "F", orientacao)
     API.log(f"orientacao:{orientacao}")
     return x, y, orientacao
->>>>>>> d6408c0b193c62de708253b6ab46b1ff6ed2f353
