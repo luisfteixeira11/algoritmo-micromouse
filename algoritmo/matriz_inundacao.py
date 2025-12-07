@@ -45,23 +45,23 @@ def atualizar_inundacao(matriz, paredes):
 
             # se no primeiro bit 2⁰==1 (indice 0 do binário ex.0010(que é esse ultimo zero)) não tiver parede na direita
             #a coordenada sucessora pode entrar na fila
-            if ((paredes[y,x]&(1<<0))==0 or paredes[y,x]==-1) and posicao_acessivel(x+1,y):
+            if ((paredes[y,x]&1)==1 or paredes[y,x]==-1) and posicao_acessivel(x+1,y):
                 if (paredes[y,x+1]&(1<<1))==0 or paredes[y,x+1]==-1:
                     movimentos.append((y,x+1))
 
             # se o segundo bit 2¹==2 (indice 1 do binário) não tiver parede na esquerda pode entrar na fila
-            if ((paredes[y,x]&(1<<1))==0 or paredes[y,x]==-1) and posicao_acessivel(x-1,y):
+            if ((paredes[y,x]&2)==2 or paredes[y,x]==-1) and posicao_acessivel(x-1,y):
                 if (paredes[y,x-1]&(1<<0))==0 or paredes[y,x-1]==-1:
                     movimentos.append((y,x-1))
 
             # se o terceiro bit 2²==4 (indice 2 do binário) não tiver parede embaixo pode entrar na fila
-            if ((paredes[y,x]&(1<<2))==0 or paredes[y,x]==-1) and posicao_acessivel(x,y-1):
+            if ((paredes[y,x]&4)==4 or paredes[y,x]==-1) and posicao_acessivel(x,y-1):
                 if (paredes[y-1,x]&(1<<3))==0 or paredes[y-1,x]==-1:
                     API.log(paredes[y-1,x]&(1<<3)==0)
                     movimentos.append((y-1,x))
 
             # se o quarto bit 2³==8 (indice 3 do binário) não tiver parede encima pode entrar na fila
-            if ((paredes[y,x]&(1<<3))==0 or paredes[y,x]==-1) and posicao_acessivel(x,y+1):
+            if ((paredes[y,x]&8)==8 or paredes[y,x]==-1) and posicao_acessivel(x,y+1):
                 if (paredes[y+1,x]&(1<<2))==0 or paredes[y+1,x]==-1:
                     movimentos.append((y+1,x))
         

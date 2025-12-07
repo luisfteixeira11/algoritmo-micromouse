@@ -41,9 +41,10 @@ def main():
 
                 
         matriz_inundacao = np.zeros((16, 16), dtype=int)-1
-        matriz_inundacao = flood_volta(matriz_inundacao, matriz_parede)
+        matriz_inundacao = atualizar_inundacao(matriz_inundacao, matriz_parede)
         API.log(matriz_inundacao)
         
+        matriz_inundacao = flood_volta(matriz_inundacao, matriz_parede)
         
 
         
