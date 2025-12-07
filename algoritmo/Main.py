@@ -41,9 +41,23 @@ def main():
             if not -1 in matriz_parede:
                 matriz_concluida = True
                 API.log(matriz_concluida)
+<<<<<<< HEAD
             API.log(matriz_parede)
             
+=======
+<<<<<<< HEAD
+            API.log(x)
+            API.log(y)
+            API.log(orientacao)
+            API.log(matriz_inundacao)
+>>>>>>> ad69f041758b4ae481cc9b44819ca35ca9271e6c
         
+=======
+            #API.log(x)
+            #API.log(y)
+            #API.log(orientacao)
+            API.log(matriz_parede)
+>>>>>>> Giulia
         melhor_caminho_para_centro(x, y, orientacao, matriz_inundacao, matriz_parede)
 
         

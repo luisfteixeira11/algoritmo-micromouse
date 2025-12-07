@@ -31,7 +31,10 @@ def atualizar_paredes(matriz, x, y, orientacao):
         parede+=esquerda
     if API.wallRight():
         parede+=direita
-        
+
+    #se não tiver parede
+    
+    
     matriz[y, x] = parede
 
     return matriz
