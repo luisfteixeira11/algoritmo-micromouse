@@ -35,9 +35,12 @@ def rota_mapeamento(x,y,matriz, orientacao):
     #*bifurcação parede na frente
     elif API.wallFront() and API.wallLeft()==False and API.wallRight()==False:
         #verificadores
+<<<<<<< HEAD
         #API.log(f"matriz direita: {matriz[direita]}")
         #API.log(f"matriz esquerda: {matriz[esquerda]}")
         API.log("bifurcacao parede na frente")
+=======
+>>>>>>> origin/main
 
         #esquerda visitada?
         if matriz[esquerda] == -1 and matriz[direita] == -1:
@@ -50,7 +53,6 @@ def rota_mapeamento(x,y,matriz, orientacao):
             
         elif matriz[esquerda] != -1 and matriz[direita] != -1: #evitar loops quando os adjascentes já foram visitados
             escolha = random.choice(["D", "E"])
-            API.log(f"escolha aleatoria: {escolha}")
             if escolha == "E":
                 API.turnLeft90()
                 x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "E", orientacao)
@@ -62,9 +64,12 @@ def rota_mapeamento(x,y,matriz, orientacao):
     #*bifurcação parede esquerda
     elif API.wallFront()==False and API.wallLeft() and API.wallRight()==False:
         #verificadores
+<<<<<<< HEAD
         #API.log(f"matriz cima: {matriz[cima]}")
         #API.log(f"matriz direita: {matriz[direita]}")
         API.log("Bifurcacao parede na esquerda")
+=======
+>>>>>>> origin/main
 
         #frente visitada?
         if matriz[cima] == -1 and matriz[direita] == -1:
@@ -76,7 +81,6 @@ def rota_mapeamento(x,y,matriz, orientacao):
             
         elif matriz[cima] != -1 and matriz[direita] != -1:#evitar loops quando os adjascentes já foram visitados
             escolha = random.choice(["D", "F"])
-            API.log(f"escolha aleatoria: {escolha}")
             if escolha == "D":
                 API.turnRight90()
                 x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)
@@ -86,9 +90,12 @@ def rota_mapeamento(x,y,matriz, orientacao):
     #*bifurcação parede direita
     elif API.wallFront()==False  and API.wallLeft()==False and API.wallRight():
         #verificadores
+<<<<<<< HEAD
         #API.log(f"matriz cima: {matriz[cima]}")
         #API.log(f"matriz esquerda: {matriz[esquerda]}")
         API.log("Bifurcacao parede na direita")
+=======
+>>>>>>> origin/main
 
         #frente visitada?
         if matriz[cima] == -1 and matriz[esquerda] == -1:
@@ -100,7 +107,6 @@ def rota_mapeamento(x,y,matriz, orientacao):
 
         elif matriz[cima] != -1 and matriz[esquerda] != -1: 
             escolha = random.choice(["E", "F"])
-            API.log(f"escolha aleatoria: {escolha}")
             if escolha == "E":
                 API.turnLeft90()
                 x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "E", orientacao)
@@ -110,10 +116,13 @@ def rota_mapeamento(x,y,matriz, orientacao):
     #*trifurcação
     elif API.wallFront()==False and API.wallLeft()==False and API.wallRight()==False:
         #verificadores
+<<<<<<< HEAD
         #API.log(f"matriz cima: {matriz[cima]}")
         #API.log(f"matriz esquerda: {matriz[esquerda]}")
         #API.log(f"matriz direita: {matriz[direita]}")
         API.log("trifurcacao")
+=======
+>>>>>>> origin/main
 
         #frente visitada?
         if matriz[cima] == -1 and matriz[direita] == -1 and matriz[esquerda] == -1:
@@ -129,7 +138,6 @@ def rota_mapeamento(x,y,matriz, orientacao):
             
         elif matriz[cima] != -1 and matriz[esquerda] != -1 and matriz[direita] != -1:
             escolha = random.choice(["D", "E", "F"])
-            API.log(f"escolha aleatoria: {escolha}")
             if escolha == "D":
                 API.turnRight90()
                 x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)
@@ -162,7 +170,6 @@ def rota_mapeamento(x,y,matriz, orientacao):
         x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "F", orientacao)
     else:
     # Se a frente está bloqueada, não avance.
-        API.log("Parede à frente, não avancando.")
         escolha = random.choice(["D", "E"])
         
         if escolha == "E":
