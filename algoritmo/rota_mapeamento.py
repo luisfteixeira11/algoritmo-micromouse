@@ -165,7 +165,6 @@ def rota_mapeamento(x,y,matriz, orientacao):
         x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "F", orientacao)
     else:
     # Se a frente está bloqueada, não avance.
-    # Aqui você pode decidir retroceder ou apenas não mover.
         API.log("Parede à frente, não avançando.")
 
     
