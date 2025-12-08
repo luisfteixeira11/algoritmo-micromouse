@@ -1,70 +1,65 @@
 import API 
-import sys
 from matriz_inundacao import atualizar_inundacao
 from matriz_paredes import atualizar_paredes
 import numpy as np
+from rota_mapeamento import rota_mapeamento
+from flood_volta import flood_volta
+from fastrun import melhor_caminho_para_centro
 
 
-def log(string):
-    sys.stderr.write("{}\n".format(string))
-    sys.stderr.flush()
-
-N = 0
-L = 1
-S = 2
-O = 3
-
-def atualizar_coordenada_orientacao(x, y, movimento,  orientacao):
-    if movimento == "F":
-        if orientacao == N:
-            y -= 1
-        elif orientacao == S:
-            y += 1
-        elif orientacao == L:
-            x += 1
-        elif orientacao == O:
-            x -= 1
-    if movimento == "D":
-        orientacao = (orientacao + 1) % 4
-    if movimento == "E":
-        orientacao = (orientacao -1) % 4
-
-    return x, y, orientacao     
-
-
-
-
-
-
-## A fazer: ajuste da posição inicial da matriz
 
 def main():
+<<<<<<< HEAD
     x = 15
     y = 0
+=======
+    x = 0
+    y = 15
+>>>>>>> 793159076067ede1b466623363c527e64215c7b7
     orientacao = 0 
-    log("Running...")
     # Criação da matriz de paredes com todos os elementos -1
     matriz_parede = np.zeros((16, 16), dtype=int)-1
     # Criação da matriz de inundaçao com todos elementos em -1
-    matriz_inundacao = np.zeros((16, 16), dtype=int)-1
-    API.setColor(0, 0, "G")
+    API.setColor(0, 0, "R")
     API.setText(0, 0, "START")
+    API.setColor(7, 7, "G")
+    API.setText(7, 7, "END")
+    API.setColor(8, 7, "G")
+    API.setText(8, 7, "END")
+    API.setColor(7, 8, "G")
+    API.setText(7, 8, "END")
+    API.setColor(8, 8, "G")
+    API.setText(8, 8, "END")
+    # Atualização da matriz
     while True:
+        # Criação da matriz de paredes no contexto atual da célula
         # Atualização da matriz de inundação no contexto atual da célula
-        matriz_inundacao = atualizar_inundacao(matriz_inundacao)
-        # Atualização da matriz
-        log("Running...")
-        # Criação da matrz de inundação no contexto atual da célula
-        matriz_parede = atualizar_paredes(matriz_parede, x, y, orientacao)
-        # Lógica de virar a matriz. 
-        if not API.wallLeft():
-            API.turnLeft()
-        while API.wallFront():
-            API.turnRight()
-            atualizar_coordenada_orientacao(x, y, command, orientacao)
-        log(matriz_parede)
-        log(matriz_inundacao)
-        API.moveForward()
+        matriz_concluida = False
+        while matriz_concluida == False:
+            matriz_inundacao = np.zeros((16, 16), dtype=int)-1
+            matriz_parede = atualizar_paredes(matriz_parede, x, y, orientacao)
+            matriz_inundacao = atualizar_inundacao(matriz_inundacao, matriz_parede)
+            if not -1 in matriz_parede:
+                matriz_concluida = True
+<<<<<<< HEAD
+                API.log("mapeamento concluido")
+                break
+            #API.log(matriz_parede)
+            
+            #API.log(x)
+            #API.log(y)
+            #API.log(orientacao)
+            #API.log(matriz_parede)
+
+=======
+            x, y, orientacao = rota_mapeamento(x, y, matriz_parede, orientacao)
+            API.setColor(x, 15-y, "B")
+            API.log(matriz_parede)
+            matriz_inundacao = flood_volta(matriz_inundacao, matriz_parede)
+        if (matriz_concluida==True):
+            API.log("venceu")
+>>>>>>> origin/main
+        melhor_caminho_para_centro(x, y, orientacao, matriz_inundacao, matriz_parede)
 
         
 

@@ -8,23 +8,17 @@ def posicao_acessivel(x1, y1):
         return False
     return True
 
-def atualizar_inundacao(matriz, paredes):
-    inicio1 = (8,8)
-    inicio2 = (8,7) ## zeros na matriz
-    inicio3 = (7,8)
-    inicio4 = (7,7)
+def flood_volta(matriz, paredes):
+    inicio1 = (15,0)
 
     movimentos = deque() # fila que vai conter as duplas de indices de cada elemento da matriz
     movimentos.append(inicio1)
-    movimentos.append(inicio2)
-    movimentos.append(inicio3)
-    movimentos.append(inicio4)
 
     #numero do inicio da matriz
     distancia = 0
 
      
-    while movimentos:
+    while movimentos: 
         ##enquanto y fila tiver elementos dentro dela, vai continuar o loop
         ##pra cada elemento da fila
         tamanho_movimentos = len(movimentos)
@@ -63,7 +57,7 @@ def atualizar_inundacao(matriz, paredes):
             if posicao_acessivel(x,y+1):
                 if ((paredes[y,x]&4)==0 or paredes[y,x]==-1) and ((paredes[y+1,x]&8)==0 or paredes[y+1,x]==-1):
                     movimentos.append((y+1,x))
-        
         distancia+=1
-        
+
+
     return matriz
