@@ -39,7 +39,7 @@ def atualizar_coordenada_orientacao(x, y, movimento,  orientacao):
 ## A fazer: ajuste da posição inicial da matriz
 
 def main():
-    x = 0
+    x = 15
     y = 0
     orientacao = 0 
     log("Running...")
