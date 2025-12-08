@@ -40,7 +40,8 @@ def main():
             API.setColor(x, 15-y, "B")
             if not -1 in matriz_parede:
                 matriz_concluida = True
-                
+                API.log("mapeamento concluido")
+                break
             #API.log(matriz_parede)
             
             #API.log(x)
