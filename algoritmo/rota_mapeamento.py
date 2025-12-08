@@ -46,9 +46,6 @@ def rota_mapeamento(x,y,matriz, orientacao):
     #bifurcação parede na frente
     elif API.wallFront() and API.wallLeft()==False and API.wallRight()==False:
         #verificadores
-        #API.log(f"matriz direita: {matriz[direita]}")
-        #API.log(f"matriz esquerda: {matriz[esquerda]}")
-        #API.log("bifurcação parede na frente")
 
         #esquerda visitada?
         if matriz[esquerda] == -1 and matriz[direita] == -1:
@@ -74,9 +71,6 @@ def rota_mapeamento(x,y,matriz, orientacao):
     #bifurcação parede esquerda
     elif API.wallFront()==False and API.wallLeft() and API.wallRight()==False:
         #verificadores
-        #API.log(f"matriz cima: {matriz[cima]}")
-        #API.log(f"matriz direita: {matriz[direita]}")
-        #API.log("Bifurcação parede na esquerda")
 
         #frente visitada?
         if matriz[cima] == -1 and matriz[direita] == -1:
@@ -95,9 +89,6 @@ def rota_mapeamento(x,y,matriz, orientacao):
     #bifurcação parede direita
     elif API.wallFront()==False  and API.wallLeft()==False and API.wallRight():
         #verificadores
-        #API.log(f"matriz cima: {matriz[cima]}")
-        #API.log(f"matriz esquerda: {matriz[esquerda]}")
-        #API.log("Bifurcação parede na direita")
 
         #frente visitada?
         if matriz[cima] == -1 and matriz[esquerda] == -1:
@@ -116,10 +107,6 @@ def rota_mapeamento(x,y,matriz, orientacao):
     #trifurcação
     elif API.wallFront()==False and API.wallLeft()==False and API.wallRight()==False:
         #verificadores
-        #API.log(f"matriz cima: {matriz[cima]}")
-        #API.log(f"matriz esquerda: {matriz[esquerda]}")
-        #API.log(f"matriz direita: {matriz[direita]}")
-        #API.log("trifurcação")
 
         #frente visitada?
         if matriz[cima] == -1 and matriz[direita] == -1 and matriz[esquerda] == -1:
