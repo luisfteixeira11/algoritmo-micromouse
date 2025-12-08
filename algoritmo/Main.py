@@ -9,13 +9,8 @@ from fastrun import melhor_caminho_para_centro
 
 
 def main():
-<<<<<<< HEAD
-    x = 15
-    y = 0
-=======
     x = 0
     y = 15
->>>>>>> 793159076067ede1b466623363c527e64215c7b7
     orientacao = 0 
     # Criação da matriz de paredes com todos os elementos -1
     matriz_parede = np.zeros((16, 16), dtype=int)-1
@@ -41,24 +36,14 @@ def main():
             matriz_inundacao = atualizar_inundacao(matriz_inundacao, matriz_parede)
             if not -1 in matriz_parede:
                 matriz_concluida = True
-<<<<<<< HEAD
-                API.log("mapeamento concluido")
+                API.log("Mapeamento concluído")
                 break
-            #API.log(matriz_parede)
-            
-            #API.log(x)
-            #API.log(y)
-            #API.log(orientacao)
-            #API.log(matriz_parede)
-
-=======
             x, y, orientacao = rota_mapeamento(x, y, matriz_parede, orientacao)
             API.setColor(x, 15-y, "B")
             API.log(matriz_parede)
             matriz_inundacao = flood_volta(matriz_inundacao, matriz_parede)
         if (matriz_concluida==True):
             API.log("venceu")
->>>>>>> origin/main
         melhor_caminho_para_centro(x, y, orientacao, matriz_inundacao, matriz_parede)
 
         
