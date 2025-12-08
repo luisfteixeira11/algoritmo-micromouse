@@ -16,11 +16,13 @@ def rota_mapeamento(x,y,matriz, orientacao):
     def frente():
         pass
 
+    
+    direita_ou_esquerda=[API.turnLeft90, API.turnRight90]
+    direita_ou_frente=[frente, API.turnRight90]
+    esquerda_ou_frente=[API.turnLeft90, frente]
+    direita_ou_esquerda_ou_frente=[API.turnLeft90, API.turnRight90, frente]
 
-    direita_ou_esquerda=[API.turnLeft, API.turnRight]
-    direita_ou_frente=[frente, API.turnRight]
-    esquerda_ou_frente=[API.turnLeft, frente]
-    direita_ou_esquerda_ou_frente=[API.turnLeft, API.turnRight, frente]
+
 
     #sentido = orientacao
 
@@ -46,15 +48,16 @@ def rota_mapeamento(x,y,matriz, orientacao):
     #bifurcação parede na frente
     elif API.wallFront() and API.wallLeft()==False and API.wallRight()==False:
         #verificadores
-        API.log(f"matriz direita: {matriz[direita]}")
-        API.log(f"matriz esquerda: {matriz[esquerda]}")
+        #API.log(f"matriz direita: {matriz[direita]}")
+        #API.log(f"matriz esquerda: {matriz[esquerda]}")
+        API.log("bifurcação parede na frente")
 
         #esquerda visitada?
-        if matriz[esquerda] == -1:
+        if matriz[esquerda] == -1 and matriz[direita] == -1:
             API.turnLeft90()
             x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "E", orientacao)
             #sentido = (sentido - 1) % 4
-        elif matriz[esquerda] != -1:
+        elif matriz[direita] == -1 and matriz[esquerda] != -1:
             API.turnRight90()
             x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)
             #sentido = (sentido + 1) % 4
@@ -64,13 +67,14 @@ def rota_mapeamento(x,y,matriz, orientacao):
     #bifurcação parede esquerda
     elif API.wallFront()==False and API.wallLeft() and API.wallRight()==False:
         #verificadores
-        API.log(f"matriz cima: {matriz[cima]}")
-        API.log(f"matriz direita: {matriz[direita]}")
+        #API.log(f"matriz cima: {matriz[cima]}")
+        #API.log(f"matriz direita: {matriz[direita]}")
+        API.log("Bifurcação parede na esquerda")
 
         #frente visitada?
-        if matriz[cima] == -1:
+        if matriz[cima] == -1 and matriz[direita] == -1:
             pass
-        elif matriz[cima] != -1:
+        elif matriz[cima] != -1 and matriz[direita] == -1:
             API.turnRight90()
             x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)
             #sentido = (sentido + 1) % 4
@@ -80,13 +84,14 @@ def rota_mapeamento(x,y,matriz, orientacao):
     #bifurcação parede direita
     elif API.wallFront()==False  and API.wallLeft()==False and API.wallRight():
         #verificadores
-        API.log(f"matriz cima: {matriz[cima]}")
-        API.log(f"matriz esquerda: {matriz[esquerda]}")
+        #API.log(f"matriz cima: {matriz[cima]}")
+        #API.log(f"matriz esquerda: {matriz[esquerda]}")
+        API.log("Bifurcação parede na direita")
 
         #frente visitada?
-        if matriz[cima] == -1:
+        if matriz[cima] == -1 and matriz[esquerda] == -1:
             pass
-        elif matriz[cima] != -1:
+        elif matriz[cima] != -1 and matriz[esquerda] == -1:
             API.turnLeft90()
             x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "E", orientacao)
             #sentido = (sentido - 1) % 4
@@ -96,18 +101,19 @@ def rota_mapeamento(x,y,matriz, orientacao):
     #trifurcação
     elif API.wallFront()==False and API.wallLeft()==False and API.wallRight()==False:
         #verificadores
-        API.log(f"matriz cima: {matriz[cima]}")
-        API.log(f"matriz esquerda: {matriz[esquerda]}")
-        API.log(f"matriz direita: {matriz[direita]}")
+        #API.log(f"matriz cima: {matriz[cima]}")
+        #API.log(f"matriz esquerda: {matriz[esquerda]}")
+        #API.log(f"matriz direita: {matriz[direita]}")
+        API.log("trifurcação")
 
         #frente visitada?
-        if matriz[cima] == -1:
+        if matriz[cima] == -1 and matriz[direita] == -1 and matriz[esquerda] == -1:
             pass
-        elif matriz[esquerda] == -1: #esquerda visitada?
+        elif matriz[esquerda] == -1 and matriz[cima] != -1 and matriz[direita] == -1: #esquerda visitada?
             API.turnLeft90()
             x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "E", orientacao)
             #sentido = (sentido - 1) % 4
-        elif matriz[esquerda] != -1:
+        elif matriz[direita] == -1 and matriz[esquerda] != -1 and matriz[cima] != -1:
             API.turnRight90()
             x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)
             #sentido = (sentido + 1) % 4
