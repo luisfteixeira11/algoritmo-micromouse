@@ -20,22 +20,24 @@ def vizinhos_livres(x, y, paredes):
     #checa se ha paredes em cima (8)
     if (paredes[y, x] & 8) == 0:
         livres.append((y-1, x))
-    API.log(livres)
+
     #retorna uma lista das celúlas vizinhas livres
     return livres
 
 def escolher_melhor_vizinho(x, y, matriz, paredes):
     #usa a lista criada na função vizinhos_livres
     vizinhos = vizinhos_livres(x, y, paredes)
+
     #cria as variaveis
     melhor = None 
     menor_valor = 999
+    
     #loop que checa entre os livres qual tem menor valor na matriz de inundação
     for (vy, vx) in vizinhos:
         if matriz[vy, vx] < menor_valor:
             menor_valor = matriz[vy, vx]
             melhor = (vy, vx)
-    API.log(menor_valor)
+
     return melhor 
 
 #função que converte a coordenada achada em um movimento, baseada na orientação que ele se encontava antes 
@@ -65,15 +67,12 @@ def converter_movimento(x, y, orientacao, vx, vy):
         melhor = O
 
     melhor = (melhor-orientacao) %4
-    # diferença entre orientação atual e direção desejada
-
-
+    
     if melhor == N:
         return "F"   # frente
     if melhor == L:
         return "D"   # virar direita
     if melhor == O:
-        API.log("Esq")
         return "E"   # virar esquerda
     if melhor == S:
         return "B"   # virar 180°
@@ -109,6 +108,4 @@ def melhor_caminho(x, y, orientacao, matriz_inundacao, matriz_paredes):
     API.moveForward()
     #atualiza as coordenadas depois de cada movimento 
     x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "F", orientacao)
-    API.log(x)
-    API.log(y)
     return x, y, orientacao

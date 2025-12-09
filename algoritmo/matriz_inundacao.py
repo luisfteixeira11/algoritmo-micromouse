@@ -30,7 +30,6 @@ def atualizar_inundacao(matriz, paredes):
     #numero do inicio da matriz
     distancia = 0
 
-     
     while movimentos:
         ##enquanto y fila tiver elementos dentro dela, vai continuar o loop
         tamanho_movimentos = len(movimentos)
