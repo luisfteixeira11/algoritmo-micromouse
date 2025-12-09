@@ -4,7 +4,7 @@ import fastrun as fr
 
 def atualizar_visitacao(matriz, x, y):
 
-    visitado = (y,x)
+    visitado = [y,x]
 
     if matriz[visitado] == -1:
         matriz[visitado] = 1
