@@ -4,7 +4,7 @@ import fastrun as fr
 
 def atualizar_visitacao(matriz, x, y):
 
-    visitado = [y,x]
+    visitado = (y,x)
 
     if matriz[visitado] == -1:
         matriz[visitado] = 1
@@ -25,8 +25,8 @@ def rota_mapeamento(x, y, matriz_paredes, orientacao, matriz_visitacao):
     S = 2
     O = 3
 
+    matriz_visitacao = atualizar_visitacao(matriz_visitacao, x, y)
     melhor_caminho = fr.escolher_melhor_vizinho(x, y, matriz_visitacao, matriz_paredes)
-    API.log(melhor_caminho)
     vy, vx = melhor_caminho 
     
     movimento = fr.converter_movimento(x, y, orientacao, vy, vx)

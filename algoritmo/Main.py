@@ -18,6 +18,7 @@ def main():
     
     # Criação da matriz de inundaçao com todos elementos em -1
     matriz_volta = np.zeros((16, 16), dtype=int)-1
+    matriz_visitacao = np.zeros((16, 16), dtype=int)-1
 
     #estética do start e do end
     API.setColor(0, 0, "R")
@@ -42,10 +43,6 @@ def main():
         #criação e atualização da matriz de inundação
         matriz_inundacao = np.zeros((16, 16), dtype=int)-1
         matriz_inundacao = atualizar_inundacao(matriz_inundacao, matriz_parede)
-
-        #criação da matriz de visitação
-        matriz_visitacao = np.zeros((16, 16), dtype=int)-1
-        matriz_visitacao = atualizar_visitacao(matriz_visitacao, x, y)
 
         #conclusão do mapeamento
         if not -1 in matriz_parede:
