@@ -2,7 +2,7 @@ import API
 import random
 import fastrun as fr
 
-def rota_mapeamento(x, y, matriz_paredes, orientacao):
+def rota_mapeamento(x, y, matriz_paredes, orientacao, matriz_inundacao):
 
     cima = (y-1, x)
     baixo = (y+1, x)
@@ -13,6 +13,33 @@ def rota_mapeamento(x, y, matriz_paredes, orientacao):
     L = 1
     S = 2
     O = 3
+
+    melhor_caminho = fr.escolher_melhor_vizinho(x, y, matriz_inundacao, matriz_paredes)
+    API.log(melhor_caminho)
+    vy, vx = melhor_caminho 
+    
+    movimento = fr.converter_movimento(x, y, orientacao, vy, vx)
+    
+    def escolha_em_areas_visitadas(melhor_caminho):
+        if movimento == "N":
+            x, y, orientacao = (API.atualizar_coordenada_orientacao(x, y, "D", orientacao))
+            pass  
+            return x, y, orientacao
+        elif movimento == "L":
+            API.turnRight90()
+            x, y, orientacao = (API.atualizar_coordenada_orientacao(x, y, "D", orientacao))
+            return x, y, orientacao
+        elif movimento == "O":
+            API.turnLeft90()
+            x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "E", orientacao)
+            return x, y, orientacao
+        elif movimento == "S":
+            API.turnRight90()
+            x, y, orientacao = (API.atualizar_coordenada_orientacao(x, y, "D", orientacao))
+            API.turnRight90()
+            x, y, orientacao = (API.atualizar_coordenada_orientacao(x, y, "D", orientacao))
+            return x, y, orientacao
+
 
     # Altera a orientação do robô para ele considerar sempre a parte visual do labirinto
     if orientacao == L:
@@ -31,7 +58,6 @@ def rota_mapeamento(x, y, matriz_paredes, orientacao):
         x, y, orientacao = (API.atualizar_coordenada_orientacao(x, y, "D", orientacao))
         API.turnRight90()
         x, y, orientacao = (API.atualizar_coordenada_orientacao(x, y, "D", orientacao))
-
         
     #bifurcação parede na frente
     elif API.wallFront() and API.wallLeft()==False and API.wallRight()==False:
@@ -48,14 +74,16 @@ def rota_mapeamento(x, y, matriz_paredes, orientacao):
 
         #se a direita e a esquerda já estiver explorada: escolha aleatória para evitar loops
         elif matriz_paredes[esquerda] != -1 and matriz_paredes[direita] != -1:
-            
+            '''
             escolha = random.choice(["D", "E"])
             if escolha == "E":
                 API.turnLeft90()
                 x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "E", orientacao)
             else:
                 API.turnRight90()
-                x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)       
+                x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)'''
+            
+            x, y, orientacao = escolha_em_areas_visitadas(melhor_caminho)
             
 
     #bifurcação parede esquerda
@@ -72,13 +100,14 @@ def rota_mapeamento(x, y, matriz_paredes, orientacao):
             
         #se a direita e a frente já estiver explorada: escolha aleatória para evitar loops
         elif matriz_paredes[cima] != -1 and matriz_paredes[direita] != -1:
-            escolha = random.choice(["D", "F"])
+            ''' escolha = random.choice(["D", "F"])
             if escolha == "D":
                 API.turnRight90()
                 x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)
             else:
-                pass
-
+                pass'''
+            
+            x, y, orientacao = escolha_em_areas_visitadas(melhor_caminho)
 
     #bifurcação parede direita
     elif API.wallFront()==False  and API.wallLeft()==False and API.wallRight():
@@ -94,13 +123,16 @@ def rota_mapeamento(x, y, matriz_paredes, orientacao):
 
         #se a esquerda e a frente já estiver explorada: escolha aleatória para evitar loops
         elif matriz_paredes[cima] != -1 and matriz_paredes[esquerda] != -1: 
+            '''
             escolha = random.choice(["E", "F"])
             if escolha == "E":
                 API.turnLeft90()
                 x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "E", orientacao)
             else:
-                pass
+                pass'''
             
+            x, y, orientacao = escolha_em_areas_visitadas(melhor_caminho)
+
     #trifurcação
     elif API.wallFront()==False and API.wallLeft()==False and API.wallRight()==False:
 
@@ -120,7 +152,7 @@ def rota_mapeamento(x, y, matriz_paredes, orientacao):
 
         #se todos os adjascentes já foram explorados: escolha aleatória para evitar loops
         elif matriz_paredes[cima] != -1 and matriz_paredes[esquerda] != -1 and matriz_paredes[direita] != -1:
-            escolha = random.choice(["D", "E", "F"])
+            '''escolha = random.choice(["D", "E", "F"])
             if escolha == "D":
                 API.turnRight90()
                 x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)
@@ -129,7 +161,9 @@ def rota_mapeamento(x, y, matriz_paredes, orientacao):
                 x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "E", orientacao)
             else:
                 pass
-            
+            '''
+            x, y, orientacao = escolha_em_areas_visitadas(melhor_caminho)
+
     #só tem como virar para a direita
     elif API.wallFront() and API.wallLeft():
         API.turnRight90()
@@ -153,7 +187,7 @@ def rota_mapeamento(x, y, matriz_paredes, orientacao):
         x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "F", orientacao)
     else:
     # Se a frente está bloqueada, não avance.
-        escolha = random.choice(["D", "E"])
+        '''escolha = random.choice(["D", "E"])
         
         if escolha == "E":
             API.turnLeft90()
@@ -161,6 +195,8 @@ def rota_mapeamento(x, y, matriz_paredes, orientacao):
         else:
             API.turnRight90()
             x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)
-        
+        '''
+        x, y, orientacao = escolha_em_areas_visitadas(melhor_caminho)
 
+    
     return x, y, orientacao

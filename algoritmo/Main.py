@@ -50,7 +50,7 @@ def main():
                 break
             
             #roda escolhida durante o mapeamento
-            x, y, orientacao = rota_mapeamento(x, y, matriz_parede, orientacao)
+            x, y, orientacao = rota_mapeamento(x, y, matriz_parede, orientacao, matriz_inundacao)
             
             API.setColor(x, 15-y, "B")
         
