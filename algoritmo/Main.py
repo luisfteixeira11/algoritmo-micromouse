@@ -32,21 +32,47 @@ def main():
     
     # Atualização da matriz
     while True:
-        # Criação da matriz de paredes no contexto atual da célula
-        # Atualização da matriz de inundação no contexto atual da célula
+        # matriz que marca células visitadas durante o mapeamento (-1 = não visitado)
+        matriz_visitado = np.zeros((16, 16), dtype=int)-1
         matriz_concluida = False
         while matriz_concluida == False:
+            # atualiza paredes conhecidas a partir da célula atual
             matriz_parede = atualizar_paredes(matriz_parede, x, y, orientacao)
-            if not -1 in matriz_parede:
+            matriz_visitado[y, x] = 1
+
+            comando, prox = rota_mapeamento(x, y, matriz_visitado, orientacao, matriz_parede)
+            if comando is None:
                 matriz_concluida = True
                 API.log("Mapeamento concluido!")
                 break
-            x, y, orientacao = rota_mapeamento(x, y, matriz_parede, orientacao)
+
+            # Executa comando relativo retornado pelo planejador
+            if comando == "F":
+                API.moveForward()
+                x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "F", orientacao)
+            elif comando == "D":
+                API.turnRight()
+                x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)
+                API.moveForward()
+                x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "F", orientacao)
+            elif comando == "E":
+                API.turnLeft()
+                x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "E", orientacao)
+                API.moveForward()
+                x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "F", orientacao)
+            elif comando == "B":
+                API.turnRight()
+                x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)
+                API.turnRight()
+                x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)
+                API.moveForward()
+                x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "F", orientacao)
+
             API.setColor(x, 15-y, "B")
         
         matriz_volta = flood_volta(matriz_volta, matriz_parede)
-        API.log(matriz_volta)
-        API.log(matriz_parede)
+        API.log(f"\nMatriz inundação para a volta:\n{matriz_volta}\n")
+        API.log(f"\nMatriz paredes:\n{matriz_parede}\n")
         while True:
             x, y, orientacao = melhor_caminho(x, y, orientacao, matriz_volta, matriz_parede)
             #para quando chega ao centro 
@@ -55,7 +81,7 @@ def main():
                 break
         
         matriz_inundacao = atualizar_inundacao(matriz_inundacao, matriz_parede)
-        API.log(matriz_inundacao)
+        API.log(f"\nMatriz de inundação:\n{matriz_inundacao}\n")
         while True:
             x, y, orientacao = melhor_caminho(x, y, orientacao, matriz_inundacao, matriz_parede)
             #para quando chega ao centro 

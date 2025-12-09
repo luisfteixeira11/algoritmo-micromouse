@@ -1,168 +1,107 @@
+import collections
 import API
-import random
-
-def rota_mapeamento(x,y,matriz, orientacao):
-
-    cima = (y-1, x)
-    baixo = (y+1, x)
-    esquerda = (y, x-1)
-    direita = (y, x+1)
-
-    N = 0
-    L = 1
-    S = 2
-    O = 3
-
-    def frente():
-        pass
-
-    
-    direita_ou_esquerda=[API.turnLeft90, API.turnRight90]
-    direita_ou_frente=[frente, API.turnRight90]
-    esquerda_ou_frente=[API.turnLeft90, frente]
-    direita_ou_esquerda_ou_frente=[API.turnLeft90, API.turnRight90, frente]
+from typing import Tuple, Optional
 
 
-    # Altera a orientação do robô para ele considerar sempre a parte visual do labirinto
-    if orientacao == L:
-        cima, direita, baixo, esquerda = direita, baixo, esquerda, cima
-    elif orientacao == N:
-        cima, direita, baixo, esquerda = cima, direita, baixo, esquerda
-    elif orientacao == S:
-        cima, direita, baixo, esquerda = baixo, esquerda, cima, direita
-    elif orientacao == O:
-        cima, direita, baixo, esquerda = esquerda, cima, direita, baixo
+def rota_mapeamento(x: int, y: int, matriz_visitado, orientacao: int, paredes) -> Tuple[Optional[str], Tuple[int, int]]:
+    """
+    Planejador simplificado para mapeamento do labirinto.
 
-    #*encurralado
-    if API.wallFront() and API.wallLeft() and API.wallRight():
-        API.turnRight90()
-        x, y, orientacao = (API.atualizar_coordenada_orientacao(x, y, "D", orientacao))
-        
-        API.turnRight90()
-        x, y, orientacao = (API.atualizar_coordenada_orientacao(x, y, "D", orientacao))
-        
+    - Faz BFS (largura) na grade para encontrar a célula não-visitada
+      mais próxima (visitado == -1).
+    - Retorna um comando relativo para o primeiro passo: "F","D","E","B",
+      ou `None` se não houver célula não visitada.
 
-    #*bifurcação parede na frente
-    elif API.wallFront() and API.wallLeft()==False and API.wallRight()==False:
-        #verificadores
+    Parâmetros:
+    - x, y: posição atual (x=coluna, y=linha)
+    - matriz_visitado: numpy array 2D com -1 = não visitado
+    - orientacao: 0=N,1=E,2=S,3=W
+    - paredes: matriz 2D com bits de parede por célula, -1 = desconhecido
 
-        #esquerda visitada?
-        if matriz[esquerda] == -1 and matriz[direita] == -1:
-            API.turnLeft90()
-            x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "E", orientacao)
+    Retorno: (comando, (nova_linha, nova_coluna)) — note que a posição
+    retornada é em (y,x) para compatibilidade com a base de código.
+    """
 
-        elif matriz[direita] == -1 and matriz[esquerda] != -1:
-            API.turnRight90()
-            x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)
-            
-        elif matriz[esquerda] != -1 and matriz[direita] != -1: #evitar loops quando os adjascentes já foram visitados
-            escolha = random.choice(["D", "E"])
-            if escolha == "E":
-                API.turnLeft90()
-                x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "E", orientacao)
-            else:
-                API.turnRight90()
-                x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)
-            
+    altura, largura = paredes.shape
 
-    #*bifurcação parede esquerda
-    elif API.wallFront()==False and API.wallLeft() and API.wallRight()==False:
-        #verificadores
+    # nomes locais mais descritivos
+    linha_atual = y
+    coluna_atual = x
+    visitado = matriz_visitado
 
-        #frente visitada?
-        if matriz[cima] == -1 and matriz[direita] == -1:
-            pass
+    # DIRECTIONS: (dLinha, dColuna, bit) ordem absoluta N,E,S,W (0..3)
+    DIRECTIONS = [(-1, 0, 3), (0, 1, 0), (1, 0, 2), (0, -1, 1)]
 
-        elif matriz[cima] != -1 and matriz[direita] == -1:
-            API.turnRight90()
-            x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)
-            
-        elif matriz[cima] != -1 and matriz[direita] != -1:#evitar loops quando os adjascentes já foram visitados
-            escolha = random.choice(["D", "F"])
-            if escolha == "D":
-                API.turnRight90()
-                x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)
-            else:
-                pass
+    # ordem de expansão relativa: preferir frente, direita, esquerda, trás
+    ordem_relativa = [orientacao, (orientacao + 1) % 4, (orientacao + 3) % 4, (orientacao + 2) % 4]
 
-    #*bifurcação parede direita
-    elif API.wallFront()==False  and API.wallLeft()==False and API.wallRight():
-        #verificadores
+    fila = collections.deque()
+    fila.append((linha_atual, coluna_atual))
+    came_from = {(linha_atual, coluna_atual): None}
+    alvo = None
 
-        #frente visitada?
-        if matriz[cima] == -1 and matriz[esquerda] == -1:
-            pass
+    while fila:
+        l, c = fila.popleft()
+        # se não visitado (e não a célula atual), escolhe como alvo
+        if visitado[l, c] == -1 and not (l == linha_atual and c == coluna_atual):
+            alvo = (l, c)
+            break
 
-        elif matriz[cima] != -1 and matriz[esquerda] == -1:
-            API.turnLeft90()
-            x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "E", orientacao)
+        # expandir em ordem relativa (frente, direita, esquerda, trás)
+        for idx in ordem_relativa:
+            dl, dc, bit = DIRECTIONS[idx]
+            nl, nc = l + dl, c + dc
+            if not (0 <= nl < altura and 0 <= nc < largura):
+                continue
 
-        elif matriz[cima] != -1 and matriz[esquerda] != -1: 
-            escolha = random.choice(["E", "F"])
-            if escolha == "E":
-                API.turnLeft90()
-                x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "E", orientacao)
-            else:
-                pass
+            # se parede conhecida bloqueia o movimento, pula
+            cel = paredes[l, c]
+            if cel != -1 and ((cel >> bit) & 1) == 1:
+                continue
 
-    #*trifurcação
-    elif API.wallFront()==False and API.wallLeft()==False and API.wallRight()==False:
-        #verificadores
+            if (nl, nc) in came_from:
+                continue
 
-        #frente visitada?
-        if matriz[cima] == -1 and matriz[direita] == -1 and matriz[esquerda] == -1:
-            pass
+            came_from[(nl, nc)] = (l, c)
+            fila.append((nl, nc))
 
-        elif matriz[esquerda] == -1 and matriz[cima] != -1 and matriz[direita] == -1: #esquerda visitada?
-            API.turnLeft90()
-            x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "E", orientacao)
+    if alvo is None:
+        return None, (x, y)
 
-        elif matriz[direita] == -1 and matriz[esquerda] != -1 and matriz[cima] != -1:
-            API.turnRight90()
-            x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)
-            
-        elif matriz[cima] != -1 and matriz[esquerda] != -1 and matriz[direita] != -1:
-            escolha = random.choice(["D", "E", "F"])
-            if escolha == "D":
-                API.turnRight90()
-                x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)
-            elif escolha == "E":
-                API.turnLeft90()
-                x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "E", orientacao)
-            else:
-                pass
+    # reconstrói caminho e pega o primeiro passo
+    caminho = []
+    cur = alvo
+    while cur is not None:
+        caminho.append(cur)
+        cur = came_from[cur]
+    caminho.reverse()
 
-    #*só tem como virar para a direita
-    elif API.wallFront() and API.wallLeft():
-        API.turnRight90()
-        x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)
-        
+    if len(caminho) < 2:
+        return None, (x, y)
 
-    #*só tem como virar para a esquerda
-    elif API.wallFront() and API.wallRight():
-        API.turnLeft90()
-        x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "E", orientacao)
-        
+    prox_linha, prox_coluna = caminho[1]
+    dlinha, dcoluna = prox_linha - linha_atual, prox_coluna - coluna_atual
 
-    #*só tem seguir em frente
-    elif API.wallRight() and API.wallLeft():
-        pass
-
-    #*depois de cada turn, é necessário seguir em frente, e o código vem logo em seguida para esse moveForward
-    #*quando não acontecerá nenhum turn, mas somente seguir em frente, o código também vem para esse moveForward
-    if not API.wallFront():
-        API.moveForward()
-        x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "F", orientacao)
+    # mapa deslocamento -> direção absoluta
+    if dlinha == -1 and dcoluna == 0:
+        direcao_absoluta = 0
+    elif dlinha == 0 and dcoluna == 1:
+        direcao_absoluta = 1
+    elif dlinha == 1 and dcoluna == 0:
+        direcao_absoluta = 2
+    elif dlinha == 0 and dcoluna == -1:
+        direcao_absoluta = 3
     else:
-    # Se a frente está bloqueada, não avance.
-        escolha = random.choice(["D", "E"])
-        
-        if escolha == "E":
-            API.turnLeft90()
-            x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "E", orientacao)
-        else:
-            API.turnRight90()
-            x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)
+        return None, (x, y)
 
-    
-    return x, y, orientacao
+    diff = (direcao_absoluta - orientacao) % 4
+    if diff == 0:
+        comando = "F"
+    elif diff == 1:
+        comando = "D"
+    elif diff == 3:
+        comando = "E"
+    else:
+        comando = "B"
+
+    return comando, (prox_linha, prox_coluna)
