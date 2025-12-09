@@ -39,17 +39,6 @@ def main():
             matriz_parede = atualizar_paredes(matriz_parede, x, y, orientacao)
             if not -1 in matriz_parede:
                 matriz_concluida = True
-<<<<<<< HEAD
-                API.log("Mapeamento concluído")
-                break
-            x, y, orientacao = rota_mapeamento(x, y, matriz_parede, orientacao)
-            API.setColor(x, 15-y, "B")
-            API.log(matriz_parede)
-            matriz_inundacao = flood_volta(matriz_inundacao, matriz_parede)
-        if (matriz_concluida==True):
-            API.log("venceu")
-        melhor_caminho_para_centro(x, y, orientacao, matriz_inundacao, matriz_parede)
-=======
                 API.log("Mapeamento concluido!")
                 break
             x, y, orientacao = rota_mapeamento(x, y, matriz_parede, orientacao)
@@ -74,7 +63,6 @@ def main():
                 API.log("Você chegou ao seu destino!!")
                 break  
         break
->>>>>>> 09e05934c72a80be50284c9ae803b29a597d8697
 
         
 
