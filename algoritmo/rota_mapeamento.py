@@ -13,16 +13,6 @@ def rota_mapeamento(x,y,matriz, orientacao):
     S = 2
     O = 3
 
-    def frente():
-        pass
-
-    
-    direita_ou_esquerda=[API.turnLeft90, API.turnRight90]
-    direita_ou_frente=[frente, API.turnRight90]
-    esquerda_ou_frente=[API.turnLeft90, frente]
-    direita_ou_esquerda_ou_frente=[API.turnLeft90, API.turnRight90, frente]
-
-
     # Altera a orientação do robô para ele considerar sempre a parte visual do labirinto
     if orientacao == L:
         cima, direita, baixo, esquerda = direita, baixo, esquerda, cima
@@ -45,12 +35,9 @@ def rota_mapeamento(x,y,matriz, orientacao):
     #*bifurcação parede na frente
     elif API.wallFront() and API.wallLeft()==False and API.wallRight()==False:
         #verificadores
-<<<<<<< HEAD
         #API.log(f"matriz direita: {matriz[direita]}")
         #API.log(f"matriz esquerda: {matriz[esquerda]}")
         API.log("bifurcacao parede na frente")
-=======
->>>>>>> 09e05934c72a80be50284c9ae803b29a597d8697
 
         #esquerda visitada?
         if matriz[esquerda] == -1 and matriz[direita] == -1:
@@ -74,12 +61,9 @@ def rota_mapeamento(x,y,matriz, orientacao):
     #*bifurcação parede esquerda
     elif API.wallFront()==False and API.wallLeft() and API.wallRight()==False:
         #verificadores
-<<<<<<< HEAD
         #API.log(f"matriz cima: {matriz[cima]}")
         #API.log(f"matriz direita: {matriz[direita]}")
         API.log("Bifurcacao parede na esquerda")
-=======
->>>>>>> 09e05934c72a80be50284c9ae803b29a597d8697
 
         #frente visitada?
         if matriz[cima] == -1 and matriz[direita] == -1:
@@ -100,12 +84,9 @@ def rota_mapeamento(x,y,matriz, orientacao):
     #*bifurcação parede direita
     elif API.wallFront()==False  and API.wallLeft()==False and API.wallRight():
         #verificadores
-<<<<<<< HEAD
         #API.log(f"matriz cima: {matriz[cima]}")
         #API.log(f"matriz esquerda: {matriz[esquerda]}")
         API.log("Bifurcacao parede na direita")
-=======
->>>>>>> 09e05934c72a80be50284c9ae803b29a597d8697
 
         #frente visitada?
         if matriz[cima] == -1 and matriz[esquerda] == -1:
@@ -126,13 +107,10 @@ def rota_mapeamento(x,y,matriz, orientacao):
     #*trifurcação
     elif API.wallFront()==False and API.wallLeft()==False and API.wallRight()==False:
         #verificadores
-<<<<<<< HEAD
         #API.log(f"matriz cima: {matriz[cima]}")
         #API.log(f"matriz esquerda: {matriz[esquerda]}")
         #API.log(f"matriz direita: {matriz[direita]}")
         API.log("trifurcacao")
-=======
->>>>>>> 09e05934c72a80be50284c9ae803b29a597d8697
 
         #frente visitada?
         if matriz[cima] == -1 and matriz[direita] == -1 and matriz[esquerda] == -1:

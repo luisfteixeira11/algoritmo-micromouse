@@ -5,19 +5,19 @@ import API
 def vizinhos_livres(x, y, paredes):
     livres = []
 
-    #checa se a paredes na direita (1)
+    #checa se ha paredes na direita (1)
     if (paredes[y, x] & 1) == 0:
         livres.append((y, x+1))
 
-    #checa se a paredes a  esquerda (2)
+    #checa se ha paredes a  esquerda (2)
     if (paredes[y, x] & 2) == 0:
         livres.append((y, x-1))
 
-    #checa se a pardes em baixo (4)
+    #checa se ha pardes em baixo (4)
     if (paredes[y, x] & 4) == 0:
         livres.append((y+1, x))
 
-    #checa se a paredes em cima (8)
+    #checa se ha paredes em cima (8)
     if (paredes[y, x] & 8) == 0:
         livres.append((y-1, x))
     API.log(livres)
