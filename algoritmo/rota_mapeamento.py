@@ -60,7 +60,7 @@ def rota_mapeamento(x, y, matriz_paredes, orientacao, matriz_visitacao):
             API.turnRight90()
             x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)
 
-        #se a direita e a esquerda já estiver explorada: escolha aleatória para evitar loops
+        #se a direita e a esquerda já estiver explorada: escolha a partir de matriz visitação para evitar loops
         elif matriz_paredes[esquerda] != -1 and matriz_paredes[direita] != -1:            
             return fr.melhor_caminho(x, y, orientacao, matriz_visitacao, matriz_paredes)
 
@@ -76,7 +76,7 @@ def rota_mapeamento(x, y, matriz_paredes, orientacao, matriz_visitacao):
             API.turnRight90()
             x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)
             
-        #se a direita e a frente já estiver explorada: escolha aleatória para evitar loops
+        #se a direita e a frente já estiver explorada: escolha a partir de matriz visitação para evitar loops
         elif matriz_paredes[cima] != -1 and matriz_paredes[direita] != -1:
             return fr.melhor_caminho(x, y, orientacao, matriz_visitacao, matriz_paredes)
 
@@ -92,7 +92,7 @@ def rota_mapeamento(x, y, matriz_paredes, orientacao, matriz_visitacao):
             API.turnLeft90()
             x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "E", orientacao)
 
-        #se a esquerda e a frente já estiver explorada: escolha aleatória para evitar loops
+        #se a esquerda e a frente já estiver explorada: escolha a partir de matriz visitação para evitar loops
         elif matriz_paredes[cima] != -1 and matriz_paredes[esquerda] != -1: 
             return fr.melhor_caminho(x, y, orientacao, matriz_visitacao, matriz_paredes)
 
@@ -113,7 +113,7 @@ def rota_mapeamento(x, y, matriz_paredes, orientacao, matriz_visitacao):
             API.turnRight90()
             x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)
 
-        #se todos os adjascentes já foram explorados: escolha aleatória para evitar loops
+        #se todos os adjascentes já foram explorados: escolha a partir de matriz visitação para evitar loops
         elif matriz_paredes[cima] != -1 and matriz_paredes[esquerda] != -1 and matriz_paredes[direita] != -1:
             return fr.melhor_caminho(x, y, orientacao, matriz_visitacao, matriz_paredes)
 
