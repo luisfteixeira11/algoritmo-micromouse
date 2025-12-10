@@ -2,19 +2,34 @@ import API
 import random
 import fastrun as fr
 
-def rota_mapeamento(x, y, matriz_paredes, orientacao):
+def atualizar_visitacao(matriz, x, y):
 
+    visitado = (y,x)
+
+    if matriz[visitado] == -1:
+        matriz[visitado] = 1
+    else:
+        matriz[visitado] += 1
+
+    return matriz
+
+def rota_mapeamento(x, y, matriz_paredes, orientacao, matriz_visitacao):
+    #atualiza a matriz de visitação
+    matriz_visitacao = atualizar_visitacao(matriz_visitacao, x, y)
+
+    #definição das posições adjacentes
     cima = (y-1, x)
     baixo = (y+1, x)
     esquerda = (y, x-1)
     direita = (y, x+1)
 
+    #definição das orientações
     N = 0
     L = 1
     S = 2
     O = 3
 
-    # Altera a orientação do robô para ele considerar sempre a parte visual do labirinto
+    #ajuste das posições adjacentes conforme a orientação atual
     if orientacao == L:
         cima, direita, baixo, esquerda = direita, baixo, esquerda, cima
     elif orientacao == N:
@@ -31,7 +46,6 @@ def rota_mapeamento(x, y, matriz_paredes, orientacao):
         x, y, orientacao = (API.atualizar_coordenada_orientacao(x, y, "D", orientacao))
         API.turnRight90()
         x, y, orientacao = (API.atualizar_coordenada_orientacao(x, y, "D", orientacao))
-
         
     #bifurcação parede na frente
     elif API.wallFront() and API.wallLeft()==False and API.wallRight()==False:
@@ -47,16 +61,8 @@ def rota_mapeamento(x, y, matriz_paredes, orientacao):
             x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)
 
         #se a direita e a esquerda já estiver explorada: escolha aleatória para evitar loops
-        elif matriz_paredes[esquerda] != -1 and matriz_paredes[direita] != -1:
-            
-            escolha = random.choice(["D", "E"])
-            if escolha == "E":
-                API.turnLeft90()
-                x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "E", orientacao)
-            else:
-                API.turnRight90()
-                x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)       
-            
+        elif matriz_paredes[esquerda] != -1 and matriz_paredes[direita] != -1:            
+            return fr.melhor_caminho(x, y, orientacao, matriz_visitacao, matriz_paredes)
 
     #bifurcação parede esquerda
     elif API.wallFront()==False and API.wallLeft() and API.wallRight()==False:
@@ -72,13 +78,7 @@ def rota_mapeamento(x, y, matriz_paredes, orientacao):
             
         #se a direita e a frente já estiver explorada: escolha aleatória para evitar loops
         elif matriz_paredes[cima] != -1 and matriz_paredes[direita] != -1:
-            escolha = random.choice(["D", "F"])
-            if escolha == "D":
-                API.turnRight90()
-                x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)
-            else:
-                pass
-
+            return fr.melhor_caminho(x, y, orientacao, matriz_visitacao, matriz_paredes)
 
     #bifurcação parede direita
     elif API.wallFront()==False  and API.wallLeft()==False and API.wallRight():
@@ -94,13 +94,8 @@ def rota_mapeamento(x, y, matriz_paredes, orientacao):
 
         #se a esquerda e a frente já estiver explorada: escolha aleatória para evitar loops
         elif matriz_paredes[cima] != -1 and matriz_paredes[esquerda] != -1: 
-            escolha = random.choice(["E", "F"])
-            if escolha == "E":
-                API.turnLeft90()
-                x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "E", orientacao)
-            else:
-                pass
-            
+            return fr.melhor_caminho(x, y, orientacao, matriz_visitacao, matriz_paredes)
+
     #trifurcação
     elif API.wallFront()==False and API.wallLeft()==False and API.wallRight()==False:
 
@@ -120,28 +115,18 @@ def rota_mapeamento(x, y, matriz_paredes, orientacao):
 
         #se todos os adjascentes já foram explorados: escolha aleatória para evitar loops
         elif matriz_paredes[cima] != -1 and matriz_paredes[esquerda] != -1 and matriz_paredes[direita] != -1:
-            escolha = random.choice(["D", "E", "F"])
-            if escolha == "D":
-                API.turnRight90()
-                x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)
-            elif escolha == "E":
-                API.turnLeft90()
-                x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "E", orientacao)
-            else:
-                pass
-            
+            return fr.melhor_caminho(x, y, orientacao, matriz_visitacao, matriz_paredes)
+
     #só tem como virar para a direita
     elif API.wallFront() and API.wallLeft():
         API.turnRight90()
         x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)
         
-
     #só tem como virar para a esquerda
     elif API.wallFront() and API.wallRight():
         API.turnLeft90()
         x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "E", orientacao)
         
-
     #só tem seguir em frente
     elif API.wallRight() and API.wallLeft():
         pass
@@ -152,15 +137,7 @@ def rota_mapeamento(x, y, matriz_paredes, orientacao):
         API.moveForward()
         x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "F", orientacao)
     else:
-    # Se a frente está bloqueada, não avance.
-        escolha = random.choice(["D", "E"])
-        
-        if escolha == "E":
-            API.turnLeft90()
-            x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "E", orientacao)
-        else:
-            API.turnRight90()
-            x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)
-        
-
+    # Se a frente está bloqueada, não avance, escolha o melhor caminho possível.
+        return fr.melhor_caminho(x, y, orientacao, matriz_visitacao, matriz_paredes)
+    
     return x, y, orientacao
