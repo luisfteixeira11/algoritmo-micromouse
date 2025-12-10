@@ -44,21 +44,23 @@ def main():
         matriz_inundacao = np.zeros((16, 16), dtype=int)-1
         matriz_inundacao = atualizar_inundacao(matriz_inundacao, matriz_parede)
 
+        #roda escolhida durante o mapeamento
+        x, y, orientacao = rota_mapeamento(x, y, matriz_parede, orientacao, matriz_visitacao)
+        
+
         #conclusão do mapeamento
         if not -1 in matriz_parede:
             matriz_concluida = True
-            API.log("Mapeamento concluido!")
-            API.log("Retornando para o Start...")
+            API.log("\nMapeamento concluido!")
+            API.log("\nRetornando para o Start...")
             break
         
-        #roda escolhida durante o mapeamento
-        x, y, orientacao = rota_mapeamento(x, y, matriz_parede, orientacao, matriz_visitacao)
-        API.log(matriz_visitacao)
         
         API.setColor(x, 15-y, "B")
     
     #atualiza a matriz de flood para a volta ao start
     matriz_volta = atualizar_flood_volta(matriz_volta, matriz_parede)
+
 
     #volta ao start
     while True:
@@ -66,7 +68,7 @@ def main():
         API.setColor(x, 15-y, "Y")
         #para quando chega ao centro 
         if (y, x) in [(15, 0)]:
-            API.log("Micromouse no START!")
+            API.log("\nMicromouse no START!")
             break
     
     #ida ao centro
@@ -75,7 +77,7 @@ def main():
         API.setColor(x, 15-y, "R")
         #para quando chega ao centro 
         if (y, x) in [(7, 7), (8, 7), (7, 8), (8, 8)]:
-            API.log("Voce chegou ao seu destino!!")
+            API.log("\nVoce chegou ao seu destino!!")
             break  
         
 

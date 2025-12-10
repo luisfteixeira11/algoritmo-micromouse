@@ -26,8 +26,13 @@ def rota_mapeamento(x, y, matriz_paredes, orientacao, matriz_visitacao):
     O = 3
 
     matriz_visitacao = atualizar_visitacao(matriz_visitacao, x, y)
-    melhor_caminho = fr.escolher_melhor_vizinho(x, y, matriz_visitacao, matriz_paredes)
-    vy, vx = melhor_caminho 
+    
+    #x, y, orientacao = fr.melhor_caminho(x, y, orientacao, matriz_visitacao, matriz_paredes)
+
+    '''
+    vizinhos = fr.vizinhos_livres(x, y, matriz_paredes)
+    melhor_vizinho = fr.escolher_melhor_vizinho(x, y, matriz_visitacao, matriz_paredes)
+    vy, vx = melhor_vizinho
     
     movimento = fr.converter_movimento(x, y, orientacao, vy, vx)
     
@@ -50,7 +55,7 @@ def rota_mapeamento(x, y, matriz_paredes, orientacao, matriz_visitacao):
             x, y, orientacao = (API.atualizar_coordenada_orientacao(x, y, "D", orientacao))
             return x, y, orientacao
         
-        return x, y, orientacao
+        return x, y, orientacao'''
 
 
     # Altera a orientação do robô para ele considerar sempre a parte visual do labirinto
@@ -95,8 +100,7 @@ def rota_mapeamento(x, y, matriz_paredes, orientacao, matriz_visitacao):
                 API.turnRight90()
                 x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)'''
             
-            x, y, orientacao = escolha_em_areas_visitadas(movimento, x, y, orientacao)
-            
+            return fr.melhor_caminho(x, y, orientacao, matriz_visitacao, matriz_paredes)
 
     #bifurcação parede esquerda
     elif API.wallFront()==False and API.wallLeft() and API.wallRight()==False:
@@ -119,7 +123,7 @@ def rota_mapeamento(x, y, matriz_paredes, orientacao, matriz_visitacao):
             else:
                 pass'''
             
-            x, y, orientacao = escolha_em_areas_visitadas(movimento, x, y, orientacao)
+            return fr.melhor_caminho(x, y, orientacao, matriz_visitacao, matriz_paredes)
 
     #bifurcação parede direita
     elif API.wallFront()==False  and API.wallLeft()==False and API.wallRight():
@@ -143,7 +147,7 @@ def rota_mapeamento(x, y, matriz_paredes, orientacao, matriz_visitacao):
             else:
                 pass'''
             
-            x, y, orientacao = escolha_em_areas_visitadas(movimento, x, y, orientacao)
+            return fr.melhor_caminho(x, y, orientacao, matriz_visitacao, matriz_paredes)
 
     #trifurcação
     elif API.wallFront()==False and API.wallLeft()==False and API.wallRight()==False:
@@ -174,7 +178,7 @@ def rota_mapeamento(x, y, matriz_paredes, orientacao, matriz_visitacao):
             else:
                 pass
             '''
-            x, y, orientacao = escolha_em_areas_visitadas(movimento, x, y, orientacao)
+            return fr.melhor_caminho(x, y, orientacao, matriz_visitacao, matriz_paredes)
 
     #só tem como virar para a direita
     elif API.wallFront() and API.wallLeft():
@@ -199,17 +203,18 @@ def rota_mapeamento(x, y, matriz_paredes, orientacao, matriz_visitacao):
         x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "F", orientacao)
     else:
     # Se a frente está bloqueada, não avance.
-        # Tentativa 1: virar à direita
-        API.turnRight90()
-        x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)
 
-        # Se ainda estiver bloqueado, tenta virar à esquerda
-        if API.wallFront():
-            # desfaz a virada à direita
-            API.turnLeft90()
-            x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "E", orientacao)
-            
-        #x, y, orientacao = escolha_em_areas_visitadas(movimento, x, y, orientacao)
+        '''
+            escolha = random.choice(["D", "E"])
+            if escolha == "E":
+                API.turnLeft90()
+                x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "E", orientacao)
+            else:
+                API.turnRight90()
+                x, y, orientacao = API.atualizar_coordenada_orientacao(x, y, "D", orientacao)'''
+        
+        return fr.melhor_caminho(x, y, orientacao, matriz_visitacao, matriz_paredes)
+
 
     
     return x, y, orientacao
